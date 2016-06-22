@@ -39,6 +39,7 @@
 							</div>
 						</div>
 						<div class="ibox-content">
+							<!--/*
 							<div class="row m-b-sm m-t-sm">
                                 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
                                    	<form th:action="@{network/projects/}" method="GET"
@@ -52,23 +53,26 @@
                                    	</form>
 								</div>
 							</div>
+							*/-->
 							<div class="project-list">
 								<table class="table table-hover">
 									<tbody>
-										<tr>
+										<tr th:each="project : ${Projects}">
 											<td class="project-title">
-                                            	<a href="project_detail.html">Contract with Zender Company</a>
+                                            	<a href="project_detail.html" th:text="${project.Name}">name</a>
                                             	<br/>
-                                            	<small>Created 14.08.2014</small>
+                                            	<small th:text="${#dates.format(project.ProjectStart, 'dd.MM.yyyy')}">start</small>
                                         	</td>
 											<td class="project-people">
-                                        	    <a href="">
-                                        	    	<img alt="image" class="img-circle" src="img/a3.jpg" />
+                                        	    <a th:href="@{/network/users/{name}/ (name = ${participant.User.Username})}" th:each="participant : ${project.Participants}">
+                                        	    	<th:block th:include="users/inc/profileImages :: xs (${participant.User})"></th:block>
                                        	    	</a>
                                         	</td>
                                         	<td class="project-actions">
+                                        		<!--/*
                                             	<a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
                                             	<a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
+                                        		*/-->
                                         	</td>
                                     	</tr>
                                     </tbody>

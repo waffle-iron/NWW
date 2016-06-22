@@ -77,6 +77,7 @@
 						<div class="form-group">
 							<th:block th:replace="common/formFragments :: inputText('customer', 'Kunde', 100,'col-sm-2 control-label', 'col-xs-12 col-sm-12 col-md-8 col-lg-6', false)"></th:block>
 						</div>
+						<div class="hr-line-dashed"></div>
 						<div class="form-group">
 							<div class="col-sm-4 col-sm-offset-2">
 								<a th:href="@{/network/projects/}" class="btn btn-white">Abbrechen</a>
@@ -100,7 +101,7 @@
 						</div>
 					</div>
 					<div class="table-responsive">		
-						<table class="table table-bordered table-stripped" data-ref="ProjectParticipants" th:attr="data-count=${#lists.size(ProjectForm.Participants)}">	
+						<table class="table table-bordered table-stripped">	
 							<thead>
 								<tr>
 									<th>
@@ -120,29 +121,53 @@
 							<tbody>
 								<tr th:each="participant, stat : *{participants}">
 									<td>
-										<img src="img/gallery/2s.jpg" />
+										<th:block th:if="*{participants[__${stat.index}__].User != null}" th:include="users/inc/profileImages :: xs (*{participants[__${stat.index}__].User})"></th:block>
 									</td>
 									<td>
-										Hans Wurst
+										<select th:field="*{participants[__${stat.index}__].userUUID}" class="form-control"> 
+											<option th:each="user : ${Users}" th:value="${user.UUID}" th:text="${user.DisplayName}"></option>
+										</select>
 									</td>
 									<td>
 										<th:block th:replace="common/formFragments :: inputText('participants[' + __${stat.index}__ + '].description', '', 250,'hidden-xs hidden-sm hidden-md hidden-lg', '', false)"></th:block>
-										<!--/*
-										*/-->
 									</td>
 									<td>
-										<button class="btn btn-white">
-											<i class="fa fa-trash"></i> 
+										<button type="submit"
+												formnovalidate="formnovalidate"
+												class="btn btn-white"
+												name="removeIndex"
+												th:value="${stat.index}"
+												th:attr="data-form-submit-action=@{/network/projects/removeParticipant.do#tab-2}">
+											<i class="fa fa-trash"></i>
+											<span>Entfernen</span>
 										</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
+					<div class="hr-line-dashed"></div>
+					<div class="form-group">
+						<div class="col-sm-4 col-sm-offset-2">
+							<a th:href="@{/network/projects/}" class="btn btn-white">Abbrechen</a>
+							<button class="btn btn-primary" type="submit">Projekt speichern</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="tab-3" class="tab-pane">
 				<div class="panel-body">
+					<div class="row m-b-md">
+						<div class="col-xs-12">
+							<button type="submit"
+									formnovalidate="formnovalidate"
+									class="btn btn-info btn-xs"
+									th:attr="data-form-submit-action=@{/network/projects/addSupplier.do#tab-3}">
+								<i class="fa fa-plus fa-fw"></i>
+								<span>Hinzufügen</span>
+							</button>
+						</div>
+					</div>
 					<div class="table-responsive">		
 						<table class="table table-bordered table-stripped">	
 							<thead>
@@ -175,18 +200,42 @@
 										*/-->
 									</td>
 									<td>
-										<button class="btn btn-white">
-											<i class="fa fa-trash"></i> 
+										<button type="submit"
+												formnovalidate="formnovalidate"
+												class="btn btn-white"
+												name="removeIndex"
+												th:value="${stat.index}"
+												th:attr="data-form-submit-action=@{/network/projects/removeSupplier.do#tab-3}">
+											<i class="fa fa-trash"></i>
+											<span>Entfernen</span>
 										</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
+					<div class="hr-line-dashed"></div>
+					<div class="form-group">
+						<div class="col-sm-4 col-sm-offset-2">
+							<a th:href="@{/network/projects/}" class="btn btn-white">Abbrechen</a>
+							<button class="btn btn-primary" type="submit">Projekt speichern</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="tab-4" class="tab-pane">
 				<div class="panel-body">
+					<div class="row m-b-md">
+						<div class="col-xs-12">
+							<button type="submit"
+									formnovalidate="formnovalidate"
+									class="btn btn-info btn-xs"
+									th:attr="data-form-submit-action=@{/network/projects/addFile.do#tab-3}">
+								<i class="fa fa-plus fa-fw"></i>
+								<span>Hinzufügen</span>
+							</button>
+						</div>
+					</div>
 					<div class="table-responsive">		
 						<table class="table table-bordered table-stripped">	
 							<thead>
@@ -226,6 +275,13 @@
 								</tr>
 							</tbody>
 						</table>
+					</div>
+					<div class="hr-line-dashed"></div>
+					<div class="form-group">
+						<div class="col-sm-4 col-sm-offset-2">
+							<a th:href="@{/network/projects/}" class="btn btn-white">Abbrechen</a>
+							<button class="btn btn-primary" type="submit">Projekt speichern</button>
+						</div>
 					</div>
 				</div>
 			</div>
