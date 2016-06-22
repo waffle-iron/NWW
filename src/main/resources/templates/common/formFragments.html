@@ -1,0 +1,203 @@
+<!--/*
+    START TEXT INPUT 
+*/-->
+<th:block th:fragment="inputText (Name, Label, MaxLength, LblClass, InputClass, Required)">
+	<label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<strong th:text="${Label}" th:if="${Required}">lbl</strong>
+		<span th:text="${Label}" th:unless="${Required}">lbl</span>
+	</label>	
+	<div th:class="${InputClass}">
+        <input class="form-control" type="text" 
+        		th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'"
+        		th:field="*{__${Name}__}" 
+        		th:maxlength="${MaxLength}" 
+        		th:title="${Label}" 
+        		th:required="${Required != null AND Required}" />
+        <div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+	</div>
+</th:block>
+<!--/*
+    END TEXT INPUT 
+*/-->
+<!--/*
+    START PASSWORD INPUT 
+*/-->
+<th:block th:fragment="inputPassword (Name, Label, MaxLength, LblClass, InputClass, Required)">
+	<label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<strong th:text="${Label}" th:if="${Required}">lbl</strong>
+		<span th:text="${Label}" th:unless="${Required}">lbl</span>
+	</label>	
+	<div th:class="${InputClass}">
+        <input class="form-control" type="password" 
+        		th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'"
+        		th:field="*{__${Name}__}" 
+        		th:maxlength="${MaxLength}" 
+        		th:title="${Label}" 
+        		th:required="${Required != null AND Required}" />
+        <div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+	</div>
+</th:block>
+<!--/*
+    END PASSWORD INPUT 
+*/-->
+<!--/*
+    START SUMMERNOTE INPUT
+*/-->
+<th:block th:fragment="inputSummernote (Name, Label, MaxLength, LblClass, InputClass, Required, Mode)">
+	<label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<strong th:text="${Label}" th:if="${Required}">lbl</strong>
+		<span th:text="${Label}" th:unless="${Required}">lbl</span>
+	</label>
+	<div th:class="${InputClass}">
+        <input class="summernote" type="text" 
+        		th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'"
+        		th:field="*{__${Name}__}" 
+        		th:maxlength="${MaxLength}" 
+        		th:title="${Label}"
+        		th:attr="data-mode=${Mode}" 
+        		th:required="${Required != null AND Required}" />
+        <div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+	</div>
+</th:block>
+<!--/*
+    END SUMMERNOTE INPUT
+*/-->
+<!--/*
+    START TEXT INPUT WITH HELP
+*/-->
+<th:block th:fragment="inputTextWithHelp (Name, Label, MaxLength, LblClass, InputClass, Required, HelpText)">
+	<label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<strong th:text="${Label}" th:if="${Required}">lbl</strong>
+		<span th:text="${Label}" th:unless="${Required}">lbl</span>
+	</label>
+	<div th:class="${InputClass}">
+        <input class="form-control" type="text" 
+        		th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'"
+        		th:field="*{__${Name}__}" 
+        		th:maxlength="${MaxLength}" 
+        		th:title="${Label}" 
+        		th:required="${Required != null AND Required}" />
+        <div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+        <span class="help-block m-b-none" th:text="${HelpText}">
+        	Helptext
+        </span>
+	</div>
+</th:block>
+<!--/*
+    END TEXT INPUT WITH HELP
+*/-->
+<!--/*
+	START READONLY INPUT
+*/-->
+<th:block th:fragment="readonlyText (Name, Label, LblClass, InputClass)">
+	<label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<span th:text="${Label}">lbl</span>
+	</label>
+    <div th:class="${InputClass}">
+        <input class="form-control" type="text" 
+         		th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'"
+        		th:field="*{__${Name}__}" 
+        		th:placeholder="${Label}" 
+        		readonly = "readonly" />
+        <div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+    </div>
+</th:block>
+<!--/*
+	END READONLY INPUT
+*/-->
+<!--/*
+    START TEXTAREA 
+*/-->
+<th:block th:fragment="inputTextArea (Name, Label, MaxLength, LblClass, InputClass, Required)">
+    <label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<span th:text="${Label}">lbl</span>
+	</label>
+    <div th:class="${InputClass}">
+        <textarea class="form-control" type="text"
+        		th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'" 
+        		th:field="*{__${Name}__}" 
+        		th:maxlength="${MaxLength}" 
+        		th:title="${Label}" 
+        		th:required="${Required != null AND Required}"></textarea>
+        <div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+    </div>
+</th:block>
+<!--/*
+    END TEXTAREA 
+*/-->
+<!--/*
+    START URL INPUT 
+*/-->
+<th:block th:fragment="inputURL (Name, Label, MaxLength, LblClass, InputClass, Required)">
+	<label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<strong th:text="${Label}" th:if="${Required}">lbl</strong>
+		<span th:text="${Label}" th:unless="${Required}">lbl</span>
+	</label>	
+	<div th:class="${InputClass}">
+        <input class="form-control" type="url" 
+        		th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'"
+        		th:field="*{__${Name}__}" 
+        		th:maxlength="${MaxLength}" 
+        		th:title="${Label}" 
+        		th:required="${Required != null AND Required}" />
+        <div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+	</div>
+</th:block>
+<!--/*
+    END URL INPUT 
+*/-->
+<!--/*
+	START DATE INPUT
+*/-->
+<th:block th:fragment="inputDate (Name, Label, LblClass, InputClass, Required)">
+	<label th:class="${LblClass}" th:classappend="${#fields.hasErrors(__'\'' + ${Name} + '\''__)} ? ' error'">
+		<strong th:text="${Label}" th:if="${Required}">lbl</strong>
+		<span th:text="${Label}" th:unless="${Required}">lbl</span>
+	</label>
+	<div th:class="${InputClass}">	
+		<div class="input-group date">
+			<span class="input-group-addon">
+				<i class="fa fa-calendar"></i>
+			</span>
+			<input type="text" class="form-control" 
+					th:field="*{__${Name}__}"
+					th:required="${Required != null AND Required}" />
+		</div>
+		<div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors(__'\'' + ${Name} + '\''__)}">
+            <ul>
+                <li th:each="err : ${#fields.errors(__'\'' + ${Name} + '\''__)}" th:utext="${err}" />
+            </ul>
+        </div>
+	</div>
+</th:block>
+<!--/*
+	END DATE INPUT
+*/-->

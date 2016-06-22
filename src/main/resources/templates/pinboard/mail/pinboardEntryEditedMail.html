@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html th:include="email/layout :: layout">
+<head>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<h2 th:if="${Entry.Type == 0}" th:text="${Entry.OwningUser.DisplayName} + ' hat sein Angebot bearbeitet'"></h2>
+		<h2 th:if="${Entry.Type == 1}" th:text="${Entry.OwningUser.DisplayName} + ' hat sein Gesuch bearbeitet'"></h2>
+		<h3>
+			<span th:text="${Entry.OwningUser.DisplayName}"></span>
+			<span th:if="${Entry.Type == 0}">bietet</span>
+			<span th:if="${Entry.Type == 1}">sucht</span>		
+		</h3>
+		<h3>
+			<a th:href="${Host} + '/network/pinboard/entries/' + ${Entry.UUID}"
+				th:text="${Entry.Subject}">
+				Betreff
+			</a>
+		</h3>
+		<div th:utext="${Entry.Description}">
+		
+		</div>
+		<div>
+			Wenn du dich bei <span th:text="${Entry.OwningUser.DisplayName}"></span> melden möchtest klicke <a th:href="${Host} + '/network/pinboard/entries/' + ${Entry.UUID}">hier</a>!
+		</div>
+	</th:block>
+</body>
+</html>

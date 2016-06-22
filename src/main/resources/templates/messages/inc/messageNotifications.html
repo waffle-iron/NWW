@@ -1,0 +1,12 @@
+<th:block th:if="${param.m != null}">
+	<script type="text/javascript" th:if="${param.m[0] == 'SMS'}">
+		toastr.success('Die Email wurde an alle Empfänger gesandt.', 'Emailversand erfolgreich');
+	</script>
+</th:block>
+<th:block th:if="${param.e != null}">
+</th:block>
+<th:block th:if="${ERROR != null}">
+	<script type="text/javascript" th:if="${ERROR == 'SME'}">
+		toastr.error('Die Email konnte nicht versandt werden!', 'Es ist ein Fehler aufgetreten!');
+	</script>
+</th:block>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="'Fähigkeiten bearbeiten | ' + ${User.DisplayName} + ' | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/custom.js}"></script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>F&auml;higkeiten bearbeiten</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li>
+						<a th:href="@{/network/users/}">Mitglieder</a>
+					</li>
+					<li>
+						<a th:href="@{/network/users/{name}/(name = ${User.Username})}"
+								th:text="${User.DisplayName}">
+							Benutzername
+						</a>
+					</li>
+					<li class="active">
+						 <strong>F&auml;higkeiten bearbeiten</strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="wrapper wrapper-content animated fadeIn">
+			<div class="row">
+				<form method="POST" th:action="@{/network/users/{name}/editSkills.do (name = ${User.Username})}" 
+						th:object="${SkillsForm}" data-ref="skills-form"
+						class="form-horizontal"
+						th:attr="data-new-skill-url=@{/network/users/{name}/newSkillTemplate (name = ${User.Username})}">
+					<div class="col-lg-6 col-md-12">
+						<div class="ibox float-e-margins">
+	                        <div class="ibox-title">
+	                            <h5>F&auml;higkeiten</h5>
+	                        </div>
+							<div class="ibox-content" data-ref="skillsList">
+								<div class="form-group" th:each="highlightedSkill : ${SkillsForm.HighlightedSkills}">
+									<div class="col-sm-12 col-xs-12">
+										<div class="input-group">
+											<span class="input-group-btn">
+                                            	<button type="button" class="btn btn-white" title="F&auml;higkeit hervorheben an / aus" data-ref="switchSkillType">
+													<i class=" fa fa-star fa-fw"></i>
+                                            	</button> 
+											</span>
+									        <input class="form-control" type="text" name="highlightedSkills" maxlength="250" th:value="${highlightedSkill}"/>
+									        <span class="input-group-btn">
+                                            	<button type="button" class="btn btn-danger" title="F&auml;higkeit entfernen" data-ref="removeSkill">
+													<i class=" fa fa-close fa-fw"></i>
+                                            	</button> 
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group" th:each="skill : ${SkillsForm.Skills}">
+									<div class="col-sm-12 col-xs-12">
+										<div class="input-group">
+											<span class="input-group-btn">
+                                            	<button type="button" class="btn btn-white" title="F&auml;higkeit hervorheben an / aus" data-ref="switchSkillType">
+													<i class=" fa fa-star-o fa-fw"></i>
+                                            	</button> 
+											</span>
+									        <input class="form-control" type="text" name="skills" maxlength="250" th:value="${skill}"/>
+									        <span class="input-group-btn">
+                                            	<button type="button" class="btn btn-danger" title="F&auml;higkeit entfernen" data-ref="removeSkill">
+													<i class=" fa fa-close fa-fw"></i>
+                                            	</button> 
+											</span>
+										</div>
+									</div>
+								</div>
+								<button class="btn btn-info" title="Neue F&auml;higkeit hinzuf&uuml;gen" data-ref="addSkill">
+									<i class="fa fa-plus fa-fw"></i>
+									Neue F&auml;higkeit
+								</button>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group">
+									<div class="col-sm-4 col-sm-offset-2">
+										<a th:href="@{/network/users/{name}/ (name = ${User.Username})}" class="btn btn-white">Abbrechen</a>
+										<button class="btn btn-primary" type="submit">Speichern</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="${#strings.abbreviate(Entry.Subject, 30)} + ' | Suchen &amp; Finden | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+	</th:block>
+	<th:block th:fragment="scripts">
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>Detailansicht</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li>
+						<a th:href="@{/network/pinboard/}">Suchen &amp; Finden</a>
+					</li>
+					<li class="active">
+						 <strong th:text="${Entry.Subject}"></strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="wrapper wrapper-content animated fadeIn">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<h5>
+								<span th:text="${Entry.Subject}"></span>							
+								<a th:href="@{/network/pinboard/entries/{uuid}/edit (uuid = ${Entry.UUID})}"
+										class="btn btn-warning btn-xs m-l-sm"
+										title="Eintrag bearbeiten"
+										th:if="${CurrentUser.UUID == Entry.OwningUser.UUID OR CurrentUser.isAdmin()}">
+									<i class="fa fa-pencil fa-fw"></i>
+								</a>
+							</h5>
+							<div class="ibox-tools pull-right" th:if="${Entry.Status == 0}">
+								<form th:if="${CurrentUser.isAdmin() OR CurrentUser.UUID == Entry.OwningUserUUID}"
+										th:action="@{/network/pinboard/entries/{uuid}/close.do (uuid = ${Entry.UUID})}"
+										method="POST"
+										class="display-ib">
+									<input type="hidden" name="origin" value="overview" />
+									<button type="submit" class="btn btn-danger btn-xs" title="Eintrag als erledigt markieren">
+										<i class="fa fa-close"></i>
+										Erledigt
+									</button>
+								</form>
+							</div>
+						</div>
+						<div class="ibox-content">
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<dl class="dl-horizontal">
+										<dt>Status</dt>
+										<dd>
+											<span th:if="${Entry.Status == 0}" class="label label-primary" title="Offen">Offen</span>
+											<span th:if="${Entry.Status == 1}" class="label label-danger" title="Geschlossen">Geschlossen</span>
+										</dd>
+										<dt class="m-t-xs">Erstellt</dt>
+										<dd class="m-t-xs" th:text="${#dates.format(Entry.CreationDate, 'dd.MM.yyyy HH:mm')}">
+										</dd>
+									</dl>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<dl class="dl-horizontal">
+										<dt>Mitglied</dt>
+										<dd>
+											<a th:href="@{/network/users/{name}/ (name = ${Entry.OwningUser.Username})}" th:title="${Entry.OwningUser.DisplayName}">
+												<th:block th:include="users/inc/profileImages :: xs (${Entry.OwningUser})"></th:block>
+											</a>
+										</dd>
+									</dl>
+								</div>
+							</div>
+							<div class="hr-line-dashed" th:if="${CurrentUser.UUID != Entry.OwningUser.UUID}"></div>
+							<div class="row" th:if="${CurrentUser.UUID != Entry.OwningUser.UUID}">
+								<div class="col-xs-12">
+									<h5>Kontakt zum Mitglied aufnehmen</h5>
+									<a th:if="${CurrentUser.UUID != Entry.OwningUser.UUID}"
+											th:href="'mailto:' + ${Entry.OwningUser.Username}" 
+											class="btn btn-white btn-xs m-r-md">
+										Email an <span th:text="${Entry.OwningUser.DisplayName}"></span>
+									</a>
+									<strong class="m-r-md" th:if="${CurrentUser.UUID != Entry.OwningUser.UUID 
+												AND Entry.OwningUser.hasProfile() 
+												AND Entry.OwningUser.Profile.Telephone != null}">
+										<i class="fa fa-phone fa-fw"></i>
+										<span th:text="${Entry.OwningUser.Profile.Telephone}"></span>			
+									</strong>
+									<strong th:if="${CurrentUser.UUID != Entry.OwningUser.UUID 
+												AND Entry.OwningUser.hasProfile() 
+												AND Entry.OwningUser.Profile.Mobile != null}">
+										<i class="fa fa-mobile fa-fw"></i>
+										<span th:text="${Entry.OwningUser.Profile.Mobile}"></span>			
+									</strong>
+								</div>
+							</div>
+							<div class="hr-line-dashed"></div>
+							<div class="row">
+								<div class="col-xs-12" th:utext="${Entry.Description}"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

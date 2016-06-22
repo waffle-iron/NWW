@@ -1,0 +1,37 @@
+<div class="ibox float-e-margins">
+	<div class="ibox-content mailbox-content">
+		<div class="file-manager">
+			<a class="btn btn-block btn-primary compose-mail"
+				th:href="@{/network/messages/mail/compose}">Neue Email schreiben</a>
+			<div class="space-25"></div>
+			<h5>info@netzwerkwohnen.org</h5>
+			<ul class="folder-list m-b-md" style="padding: 0">
+				<li>
+					<a disabled="disabled" th:href="@{/network/messages/info@netzwerkwohnen.org/INBOX/}">
+						<i class="fa fa-inbox "></i>
+						Eingang
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/network/messages/info@netzwerkwohnen.org/SENT/}"> 
+						<i class="fa fa-envelope-o"></i>
+						Gesendet
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/network/messages/info@netzwerkwohnen.org/DRAFTS/}">
+						<i class="fa fa-file-text-o"></i>
+						Entwürfe
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/network/messages/info@netzwerkwohnen.org/TRASH/}">
+						<i class="fa fa-trash-o"></i>
+						Papierkorb
+					</a>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>

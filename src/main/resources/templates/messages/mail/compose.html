@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title">Neue Nachricht | info@netzwerkwohnen.org | NETZWERK wohnen</title>
+	<th:block th:fragment="styles">
+		<link th:href="@{/css/plugins/summernote/summernote.css}" rel="stylesheet" />
+		<link th:href="@{/css/plugins/summernote/summernote-bs3.css}" rel="stylesheet" />
+		<link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet" />
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/plugins/summernote/summernote.min.js}"></script>
+		<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+		<script th:src="@{/js/custom.js}"></script>
+		<script th:src="@{/js/modules/messages.js}"></script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:include="/messages/inc/messageNotifications"></th:block>
+			<div class="row wrapper border-bottom white-bg page-heading">
+				<div class="col-lg-9">
+					<h2>Nachrichten</h2>
+					<ol class="breadcrumb">
+						<li>
+							<a th:href="@{/network}">Dashboard</a>
+						</li>
+						<li>
+							<a th:href="@{/network/messages/}">Nachrichten</a>
+						</li>
+						<li class="active">
+							<strong>Neue Email</strong>
+						</li>
+					</ol>
+				</div>
+			</div>
+			<div class="wrapper wrapper-content">
+	        	<div class="row">
+	            	<div class="col-lg-3" th:include="messages/inc/toolbar"></div>
+	            	<div class="col-lg-9 animated fadeIn">
+	                    <form th:action="@{/network/messages/mail/sendMail.do}" th:object="${MailForm}" 
+	                    		class="form-horizontal" method="POST" name="MailForm">
+                    		<input type="hidden" th:field="*{UUID}" />
+	            			<div class="mail-box-header">
+                				<div class="pull-right">
+                    				<a th:href="@{/network/messages/mail/saveDraft.do}" class="btn btn-white btn-sm"
+                    						data-role="saveDraft" 
+                    						title="Als Entwurf speichern">
+                   						<i class="fa fa-pencil"></i>
+										Entwurf
+									</a>
+                    				<a th:href="@{/network/messages/}" class="btn btn-danger btn-sm" 
+                   							title="Abbrechen und zurück zum Posteingang">
+										<i class="fa fa-times"></i>
+										Abbrechen
+									</a>
+                				</div>
+				                <h2>
+				                    Neue Email
+				                </h2>
+            				</div>
+                			<div class="mail-box">
+                				<div class="mail-body">
+                        			<div class="form-group">
+                        				<label class="col-sm-2 control-label">An:</label>
+                            			<div class="col-sm-10">
+                            				<div class="input-group">
+										        <a th:href="@{/network/messages/showAddressSelection}" data-toggle="modal" data-target="#modal-lg" class="input-group-addon btn btn-primary" title="Empfänger auswählen">
+									        		<i class="fa fa-magic fa-fw"></i>
+									        	</a>
+	                            				<input type="text" class="form-control" th:field="*{recipients}" autocomplete="off" />
+	                            				<div class="alert alert-danger attached" role="alert" th:if="${#fields.hasErrors('recipients')}">
+										            <ul>
+										                <li th:each="err : ${#fields.errors('recipients')}" th:utext="${err}" />
+										            </ul>
+										        </div>
+									        </div>
+                           				</div>
+                        			</div>
+                        			<div class="form-group">
+                        				<th:block th:replace="common/formFragments :: inputText('subject', 'Betreff', 150,'col-sm-2 control-label', 'col-sm-10 col-xs-12', true)"></th:block>
+                        			</div>
+				                </div>
+                   				<div class="mail-text">
+			                        <th:block th:replace="common/formFragments :: inputSummernote('content', '', 100000,'hidden', '', false, 'extended')"></th:block>
+									<div class="clearfix"></div>
+                        		</div>
+			                    <div class="mail-body text-right tooltip-demo">
+			                        <button class="btn btn-sm btn-primary" title="Versenden">
+			                        	<i class="fa fa-reply"></i>
+			                        	Senden
+		                        	</button>
+			                        <a th:href="@{/network/message/}" 
+			                        		class="btn btn-white btn-sm" title="Abbrechen und zurück zum Posteingag">
+			                        	<i class="fa fa-times"></i>
+		                        		Abbrechen
+		                        	</a>
+			                        <a th:href="@{/network/messages/mail/saveDraft.do}" class="btn btn-white btn-sm"
+                    						data-role="saveDraft" 
+                    						title="Als Entwurf speichern">
+                   						<i class="fa fa-pencil"></i>
+										Entwurf
+									</a>
+			                    </div>
+                    			<div class="clearfix"></div>
+			                </div>
+	                     </form>
+	            	</div>
+	           	</div>
+           	</div>
+		</th:block>
+	</body>
+</html>

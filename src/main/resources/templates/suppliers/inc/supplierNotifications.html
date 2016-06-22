@@ -1,0 +1,16 @@
+<th:block th:if="${param.m != null}">
+	<script type="text/javascript" th:if="${param.m[0] == 'SSC'}">
+		toastr.success('Lieferant gespeichert!', 'Vorgang erfolgreich');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'SSE'}">
+		toastr.success('Lieferant bearbeitet!', 'Vorgang erfolgreich');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'SDS'}">
+		toastr.success('Lieferant gelöscht!', 'Vorgang erfolgreich');
+	</script>
+</th:block>
+<th:block th:if="${param.e != null}">
+	<script type="text/javascript" th:if="${param.e[0] == 'SNF'}">
+		toastr.error('Der Lieferant konnte nicht gefunden werden!', 'Es ist ein Fehler aufgetreten!');
+	</script>
+</th:block>

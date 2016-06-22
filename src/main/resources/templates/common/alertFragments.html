@@ -1,0 +1,19 @@
+<!--/* 
+	@paramName: the name of the model attribute to be checked against the BOOLEAN value true
+	@type: types are the bootstrap alert-types "success, danger, warning, info,  
+	@dismissible: true | false
+	@header: required header text of the message
+	@message: optional message text	
+*/-->
+<th:block th:fragment="alert(paramName, type, dismissible, header, message)">
+	<div th:if="${__${paramName}__ != null AND __${paramName}__ == true}"
+			th:class="'alert alert-' + ${type}" th:classappend="${dismissible == true} ? 'alert-dismissible' : ''" role="alert">
+		<button th:if="${dismissible == true}" type="button" class="close" data-dismiss="alert"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong th:utext="${header}">header</strong>
+		<br th:fi="${message != ''}" />
+		<p th:if="${message != ''}" th:utext="${message}">message</p>
+	</div>
+</th:block>

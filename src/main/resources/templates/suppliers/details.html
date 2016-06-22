@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="${Supplier.Name} + ' | Lieferanten | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/custom.js}"></script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:include="/users/inc/profileNotifications"></th:block>
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2 th:text="${Supplier.Name}">Lieferanten Name</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li>
+						<a th:href="@{/network/suppliers/}">Lieferanten</a>
+					</li>
+					<li class="active">
+						<strong th:text="${Supplier.Name}"></strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="wrapper wrapper-content animated fadeIn">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>
+                            	Details
+	                           	<a class="btn btn-warning btn-xs m-l-md m-t-n-xs"
+	                           			th:href="@{/network/suppliers/{name}/edit (name = ${@URLUtilsService.encodeURLSegments(Supplier.Name)})}" title="Bearbeiten"
+	                           			th:if="${CurrentUser.isAdmin()}">
+	                           		<i class="fa fa-pencil fa-fw"></i>
+	                       		</a>
+	                       		<a class="btn btn-danger btn-xs m-l-xs m-t-n-xs"
+	                       				data-toggle="modal" data-target="#modal"
+	                           			th:href="@{/network/suppliers/{name}/delete (name = ${@URLUtilsService.encodeURLSegments(Supplier.Name)})}" title="Löschen"
+	                           			th:if="${CurrentUser.isAdmin()}">
+	                           		<i class="fa fa-remove fa-fw"></i>
+	                       		</a>
+	                       		
+                            </h5>
+                           	<span class="label label-danger pull-right text-uppercase" th:if="${Supplier.ApprovalStatus == 0}" title="Ungeprüft">
+                           		<i class="fa fa-question fa-fw"></i>
+                           	</span>
+                           	<span class="label label-info pull-right text-uppercase" th:if="${Supplier.ApprovalStatus == 1}" title="Geprüft">
+                           		<i class="fa fa-check fa-fw"></i>
+                           	</span>
+                        </div>
+						<div>
+                        	<div class="ibox-content no-padding border-left-right">
+								<img alt="image" class="img-responsive" src="img/profile_big.jpg" th:if="${Supplier.hasLogo()}"/>
+								<div class="text-center m-t-sm" th:unless="${Supplier.hasLogo()}">
+									<i class="fa fa-4x fa-industry placeholder" title="Noch kein Firmenlogo hinterlegt"></i>
+								</div>
+							</div>
+                            <div class="ibox-content profile-content">
+                                <h4>
+                                	<strong th:text="${Supplier.Name}">Name</strong>
+                               	</h4>
+                                <p th:text="${Supplier.Description}">
+                                    Beschreibungstext
+                                </p>
+	                            <div class="user-button" th:if="${Supplier.hasHomepage()}">
+		                            <div class="row">
+		                            	<div class="col-sm-6 col-sm-offset-6">
+		                            		<a class="btn btn-white btn-sm btn-block" th:href="${Supplier.Homepage}">
+		                            			<i class="fa fa-home m-r-sm"></i>
+		                            			zur Homepage
+	                            			</a>
+		                            	</div>
+		                            </div>
+	                           	</div>
+                            </div>
+	                    </div>
+					</div>
+					<div class="ibox float-e-margins" th:if="${CurrentUser.isAdmin()}">
+						<div class="ibox-title">
+							<h5>Ähnliche Lieferanten</h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-8">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<h5>Mitglieder zu diesem Lieferanten</h5>
+						</div>
+						<div class="ibox-content">
+							<th:block th:replace="suppliers/inc/userListForSupplier :: byUserList (${Users})">
+								UserList
+							</th:block>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</th:block>
+</body>
+</html>

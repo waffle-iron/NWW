@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        th:fragment="layout">
+	<head>
+	    <meta charset="utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	    <meta th:name="${_csrf.parameterName}" th:content="${_csrf.token}" th:if="${_csrf != null}"/>
+	    <meta name="google-site-verification" content="vxSKPvrDEULgsHCwkVut0aifeg-LJyeXNbTJezeWBT0" />
+	
+	    <title th:replace="this :: title">Netzwerk wohnen</title>
+	
+	    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+	    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet" />
+	
+	    <link th:href="@{/css/animate.css}" rel="stylesheet" />
+	    <link th:href="@{/css/plugins/toastr/toastr.min.css}" rel="stylesheet" />
+	    <link th:href="@{/css/style.css}" rel="stylesheet" />
+	    <link th:href="@{/css/custom.css}" rel="stylesheet" />
+	    
+	    <th:block th:include="this :: styles"></th:block>
+	    
+	    <!-- Mainly scripts -->
+		<script th:src="@{/js/jquery-2.1.1.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+		<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+		<script th:src="@{/js/plugins/toastr/toastr.min.js}"></script>
+		<script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+		
+		<!-- Custom and plugin javascript -->
+		<script th:src="@{/js/config.js}"></script>				
+		<script th:src="@{/js/inspinia.js}"></script>
+		
+		<th:block th:include="this :: scripts"></th:block>
+	</head>
+    <body>
+    	<!-- Piwik -->
+		<script type="text/javascript" th:if="${PiwikTrackingEnabled}">
+		  var _paq = _paq || [];
+		  _paq.push(['trackPageView']);
+		  _paq.push(['enableLinkTracking']);
+		  (function() {
+		    var u="//piwik.mircogatz.de/";
+		    _paq.push(['setTrackerUrl', u+'piwik.php']);
+		    _paq.push(['setSiteId', 2]);
+		    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+		    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+		  })();
+		</script>
+		<noscript  th:if="${PiwikTrackingEnabled}"><p><img src="//piwik.mircogatz.de/piwik.php?idsite=2" style="border:0;" alt="" /></p></noscript>
+        <div id="wrapper">
+            <nav th:replace="backend/mainMenu"></nav>
+	    	<div id="page-wrapper" class="gray-bg">
+	        	<div class="row border-bottom">
+		            <nav th:replace="backend/topMenu"></nav>
+		        </div>
+	        	<div th:replace="this :: content"></div>
+	        	<div class="footer">
+	            	<div class="pull-right">
+	                	<strong th:text="'Version ' + ${Version}"></strong>
+	            	</div>
+		        </div>
+	    	</div>
+		</div>
+		
+		<th:block th:replace="backend/inc/modalWrappers"></th:block>
+		<th:block th:replace="this :: footerScripts"></th:block>
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+			// cleanup possible toastr parameters (e / m)
+			if(window.location.href.lastIndexOf('m=') > 0 || window.location.href.lastIndexOf('e=') > 0) {
+				if(window.history && window.history.replaceState) {
+					 window.history.replaceState("object or string", "", window.location.pathname);				
+				}
+			}
+			/*]]>*/
+		</script>
+    </body>
+</html>

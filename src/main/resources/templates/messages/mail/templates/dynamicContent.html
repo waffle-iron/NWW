@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html th:include="email/layout :: layout">
+<head>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:utext="${Mail.Content}"></th:block>
+	</th:block>
+</body>
+</html>

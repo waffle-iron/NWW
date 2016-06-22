@@ -1,0 +1,47 @@
+{"properties": [
+  {
+    "name": "nww.version",
+    "type": "java.lang.String",
+    "description": "The main program version."
+  },
+  {
+    "name": "nww.vfs.root",
+    "type": "java.lang.String",
+    "description": "The virtual file system root path for this application."
+  },
+  {
+    "name": "nww.mail.contact",
+    "type": "java.lang.String",
+    "description": "The system contact email address."
+  },
+  {
+    "name": "nww.host",
+    "type": "java.lang.String",
+    "description": "The url host part used for creating absolute urls."
+  },
+  {
+    "name": "nww.tracking.piwik.enabled",
+    "type": "java.lang.Boolean",
+    "description": "Enable or disable the inclusion of Piwik tracking code"
+  },
+  {
+    "name": "nww.resources.messages.cachetime",
+    "type": "java.lang.Integer",
+    "description": "Time in seconds to cache localization resource bundles. Set to -1 to disable caching. Set to 0 to cache forever."
+  },
+  {
+    "name": "nww.preferences.enabled",
+    "type": "java.lang.Boolean",
+    "description": "Enable or disable the users settings menu."
+  },
+  {
+    "name": "nww.vfs.shared",
+    "type": "java.lang.String",
+    "description": "The virtual file system path for shared files like WYSIWYG editor uploads."
+  },
+  {
+    "name": "nww.tour.enabled",
+    "type": "java.lang.Boolean",
+    "description": "Enable or disable the tour feature."
+  }
+]}

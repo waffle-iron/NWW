@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html th:include="email/layout :: layout">
+<head>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<h2>Neuer Lieferant</h2>
+		<h3 th:text="${Supplier.Name}"></h3>
+		<a th:href="${Host} + '/network/suppliers/' + ${Supplier.Name} + '/edit'">
+			Bearbeiten
+		</a>
+	</th:block>
+</body>
+</html>

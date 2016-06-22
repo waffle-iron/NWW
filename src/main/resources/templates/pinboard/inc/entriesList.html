@@ -1,0 +1,96 @@
+<div th:fragment="tableFull (entries)" class="project-list">
+	<th:block th:replace="pinboard/inc/entriesList :: tableFullDetails(${entries}, false)"></th:block>	
+</div>
+
+<th:block th:fragment="tableFullDetails (entries, showType)">
+	<table class="table table-hover" th:if="${entries.size() > 0}">
+		<tbody>
+			<tr th:each="entry : ${entries}">
+				<td th:if="${showType}" class="project-status">
+					<i th:if="${entry.Type == 0}" title="Suche" class="fa fa-question-circle fa-fw"></i>
+					<i th:if="${entry.Type == 1}" title="Angebot" class="fa fa-exclamation-circle fa-fw"></i>
+				</td>
+				<td class="project-status">
+					<span th:if="${entry.Status == 0}" class="label label-primary">Offen</span>
+					<span th:if="${entry.Status == 1}" class="label label-danger">Geschlossen</span>
+				</td>
+				<td class="project-title">
+					<a th:href="@{/network/pinboard/entries/{uuid} (uuid = ${entry.UUID})}" th:text="${entry.Subject}"></a>
+					<br />
+					<small th:text="'Erstellt am ' + ${#dates.format(entry.CreationDate, 'dd.MM.yyyy HH:mm')}"></small>
+				</td>
+				<td class="project-people">
+					<a th:href="@{/network/users/{name}/ (name = ${entry.OwningUser.Username})}" th:title="${entry.OwningUser.DisplayName}">
+						<th:block th:include="users/inc/profileImages :: xs (${entry.OwningUser})"></th:block>
+					</a>
+				</td>
+				<td class="project-actions">
+					<a th:href="@{/network/pinboard/entries/{uuid} (uuid = ${entry.UUID})}" class="btn btn-info btn-sm">
+						<i class="fa fa-file-o fa-fw"></i>
+						Details
+					</a>
+					<a th:if="${(CurrentUser.isAdmin() OR CurrentUser.UUID == entry.OwningUserUUID) AND entry.Status != 1}"
+							th:href="@{/network/pinboard/entries/{uuid}/edit (uuid = ${entry.UUID})}"
+							class="btn btn-warning btn-sm">
+						<i class="fa fa-pencil"></i>
+						Bearbeiten
+					</a>
+					<form th:if="${(CurrentUser.isAdmin() OR CurrentUser.UUID == entry.OwningUserUUID) AND entry.Status != 1}"
+							th:action="@{/network/pinboard/entries/{uuid}/close.do (uuid = ${entry.UUID})}"
+							method="POST"
+							class="display-ib">
+						<input type="hidden" name="origin" value="overview" />
+						<button type="submit" class="btn btn-danger btn-sm" title="Eintrag als erledigt markieren">
+							<i class="fa fa-close"></i>
+							Erledigt
+						</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div th:if="${entries.size() == 0}">Es sind keine Einträge vorhanden.</div>
+</th:block>
+
+<div th:fragment="tableShort (entries)" class="project-list">
+	<table class="table table-hover" th:if="${entries.size() > 0}">
+		<tbody>
+			<tr th:each="entry : ${entries}">
+				<td class="project-status">
+					<i th:if="${entry.Type == 0}" title="Suche" class="fa fa-question-circle fa-fw"></i>
+					<i th:if="${entry.Type == 1}" title="Angebot" class="fa fa-exclamation-circle fa-fw"></i>
+				</td>
+				<td class="project-status">
+					<span th:if="${entry.Status == 0}" class="label label-primary">Offen</span>
+					<span th:if="${entry.Status == 1}" class="label label-danger">Geschlossen</span>
+				</td>
+				<td class="project-title">
+					<a th:href="@{/network/pinboard/entries/{uuid} (uuid = ${entry.UUID})}" th:text="${entry.Subject}"></a>
+					<br />
+					<small th:text="'Erstellt am ' + ${#dates.format(entry.CreationDate, 'dd.MM.yyyy HH:mm')}"></small>
+				</td>
+				<td class="project-actions">
+					<a th:href="@{/network/pinboard/entries/{uuid} (uuid = ${entry.UUID})}" class="btn btn-info btn-sm" title="Details"> 
+						<i class="fa fa-file-o fa-fw"></i>
+					</a>
+					<a th:if="${(CurrentUser.isAdmin() OR CurrentUser.UUID == entry.OwningUserUUID) AND entry.Status != 1}"
+							th:href="@{/network/pinboard/entries/{uuid}/edit (uuid = ${entry.UUID})}"
+							class="btn btn-warning btn-sm"
+							title="Bearbeiten">
+						<i class="fa fa-pencil"></i>
+					</a>
+					<form th:if="${(CurrentUser.isAdmin() OR CurrentUser.UUID == entry.OwningUserUUID) AND entry.Status != 1}"
+							th:action="@{/network/pinboard/entries/{uuid}/close.do (uuid = ${entry.UUID})}"
+							method="POST"
+							class="display-ib">
+						<input type="hidden" name="origin" value="overview" />
+						<button type="submit" class="btn btn-danger btn-sm" title="Eintrag als erledigt markieren">
+							<i class="fa fa-close"></i>
+						</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div th:if="${entries.size() == 0}">Es sind keine Einträge vorhanden.</div>
+</div>

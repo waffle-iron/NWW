@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="'Lieferanten | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+		<link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet" />
+		<link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet" />
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+		<script th:src="@{/js/custom.js}"></script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:include="/suppliers/inc/supplierNotifications"></th:block>
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>Lieferantenliste</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li class="active">
+						<strong>Lieferanten</strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		
+		<div class="wrapper wrapper-content	animated fadeIn">
+			<div class="row" th:if="${CurrentUser.isAdmin()}">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="ibox float-e-margins">
+                        <div class="ibox-title">
+							<a th:href="@{/network/suppliers/create}"
+									class="btn btn-primary" title="Neuen Lieferanten erstellen">
+								<i class="fa fa-plus fa-fw"></i>
+		                      	Neuer Lieferant
+							</a>
+                        </div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+                    <div class="ibox float-e-margins suppliers">
+                        <div class="ibox-content">
+                          		<div class="project-list" th:unless="${Suppliers.TotalElements == 0}">
+                                <table class="table table-hover">
+                                    <tbody>
+	                                    <tr th:each="supplier : ${Suppliers}">
+	                                        <td class="project-status">
+	                                            <span class="label label-danger text-uppercase" th:if="${supplier.ApprovalStatus == 0}" title="Ungeprüft">
+					                           		<i class="fa fa-question fa-fw"></i>
+					                           	</span>
+					                           	<span class="label label-info text-uppercase" th:if="${supplier.ApprovalStatus == 1}" title="Geprüft">
+					                           		<i class="fa fa-check fa-fw"></i>
+					                           	</span>
+	                                        </td>
+	                                        <td class="project-title">
+	                                            <a th:href="@{'/network/suppliers/' + ${@URLUtilsService.encodeURLSegments(supplier.Name)} + '/'}" th:text="${supplier.Name}"></a>
+	                                        </td>
+	                                        <td class="project-description hidden-xs hidden-sm" th:text="${supplier.Description}">
+	                                        </td>
+	                                        <td class="project-actions" th:if="${CurrentUser.isAdmin()}">
+	                                            <a th:href="@{'/network/suppliers/' + ${@URLUtilsService.encodeURLSegments(supplier.Name)} + '/edit'}" class="btn btn-white btn-sm">
+	                                            	<i class="fa fa-pencil"></i>
+                                            	</a>
+	                                        </td>
+	                                        
+	                                        <!--/*
+	                                        <td class="project-people">
+	                                            <a href=""><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+	                                            <a href=""><img alt="image" class="img-circle" src="img/a1.jpg"></a>
+	                                            <a href=""><img alt="image" class="img-circle" src="img/a2.jpg"></a>
+	                                            <a href=""><img alt="image" class="img-circle" src="img/a4.jpg"></a>
+	                                            <a href=""><img alt="image" class="img-circle" src="img/a5.jpg"></a>
+	                                        </td>
+	                                        */-->
+	                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                           		
+                        	<div class="row" th:if="${Suppliers.TotalElements == 0}">
+                           		<h5 class="m-l-lg">
+                           			Es wurden noch keine Lieferanten freigegeben.
+                           		</h5>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+        </div>
+	</th:block>
+	<th:block th:fragment="footerScripts">
+		<script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+			    $('.i-checks').iCheck({
+			        checkboxClass: 'icheckbox_square-green',
+			        radioClass: 'iradio_square-green',
+			    });
+			    $('.i-checks-all').iCheck({
+			        checkboxClass: 'icheckbox_square-green select-all',
+			        radioClass: 'iradio_square-green',
+			    });
+			    
+			    $('.i-checks-all')
+			    	.on('ifChecked', function() {
+			    		$('.i-checks').iCheck('check');
+			    	})
+			    	.on('ifUnchecked', function() {
+			    		$('.i-checks').iCheck('uncheck');
+			    	});
+			    
+			    $('.i-checks')
+			    	.on('ifUnchecked', function() {
+			    		 $('.i-checks-all').iCheck('indeterminate');
+			    	});
+			    
+			    $('[name="multipleAction"]').select2({
+	                placeholder: "Aktion auswählen",
+	            });
+			});
+		</script>
+	</th:block>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<th:block th:fragment="ajaxLoader (classAppend, id, ajaxURL)">
+	<div class="ajax-loader-placeholder" th:classAppend="${classAppend}" 
+			data-ref="ajax-load" 
+			th:attr="data-url=${ajaxURL}, data-ref-id=${id}">
+		<i class="fa fa-spinner fa-pulse fa-2x"></i>
+	</div>
+</th:block>

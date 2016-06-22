@@ -1,0 +1,52 @@
+<th:block th:fragment="fullList (User)">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h5>F&auml;higkeiten</h5>
+			<a th:href="@{/network/users/{name}/editSkills (name = ${User.Username})}"
+					class="btn btn-warning btn-xs m-l-sm m-t-n-xs"
+					th:if="${CurrentUser.UUID == User.UUID OR CurrentUser.isAdmin()}">
+				<i class="fa fa-pencil fa-fw"></i>
+			</a>
+		</div>
+		<div class="ibox-content">
+			<table class="table" th:if="${User.Profile != null AND (User.Profile.Abilities.size() > 0 OR User.Profile.Specials.size() > 0)}">
+				<tbody>		
+					<tr th:each="highlightedSkill : ${User.Profile.Specials}">
+						<td>
+							<i class="fa fa-star fa-fw"></i>
+							<strong th:text="${highlightedSkill}">highlighted skill</strong>
+						</td>
+					</tr>
+					<tr th:each="skill : ${User.Profile.Abilities}">
+						<td th:text="${skill}">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p th:unless="${User.Profile != null AND (User.Profile.Abilities.size() > 0 OR User.Profile.Specials.size() > 0)}">
+				<strong th:if="${CurrentUser.UUID == User.UUID}">Du hast noch keine F&auml;higkeiten angegeben!</strong>
+				<strong th:unless="${CurrentUser.UUID == User.UUID}">Das Mitglied hat noch keine F&auml;higkeiten angegeben!</strong>
+			</p>
+		</div>
+	</div>
+</th:block>
+
+<th:block th:fragment="formPart">
+	<div class="form-group">
+		<div class="col-sm-12 col-xs-12">
+			<div class="input-group">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-white" title="F&auml;higkeit hervorheben an / aus" data-ref="switchSkillType">
+						<i class=" fa fa-star-o fa-fw"></i>
+					</button> 
+				</span>
+		        <input class="form-control" type="text" name="skills" maxlength="250" />
+		        <span class="input-group-btn">
+					<button type="button" class="btn btn-danger" title="F&auml;higkeit entfernen" data-ref="removeSkill">
+						<i class=" fa fa-close fa-fw"></i>
+					</button> 
+				</span>
+			</div>
+		</div>
+	</div>
+</th:block>

@@ -1,0 +1,71 @@
+<!--/*
+	START SIMPLE PAGING BAR
+*/-->
+<nav th:fragment="simple (baseURL, page)">
+	<ul class="pagination">
+		<li th:unless="${page.first}">
+			<a th:href="@{${baseURL}(p=1)}" title="Erste Seite">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li th:if="${page.totalPages > 1}" th:each="entry, iterState : ${#numbers.sequence(0, page.totalPages - 1)}" th:class="${entry == page.number} ? 'active' : ''">
+			<a th:href="@{${baseURL}(p=${entry + 1})}" th:text="${iterState.Index + 1}">1</a>
+		</li>
+		<li th:unless="${page.last}">
+			<a th:href="@{${baseURL}(p=${page.totalPages})}" title="Letzte Seite">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+	</ul>
+</nav>
+<!--/*
+	END SIMPLE PAGING BAR
+*/-->
+
+<!--/*
+	START SIMPLE PAGING BAR WITH 1 PARAMETER
+*/-->
+<nav th:fragment="simple_1param (baseURL, param1_name, param1_value, page)">
+	<ul class="pagination">
+		<li th:unless="${page.first}">
+			<a th:href="@{${baseURL}(${param1_name}=${param1_value}, p=1)}" title="Erste Seite">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li th:if="${page.totalPages > 1}" th:each="entry, iterState : ${#numbers.sequence(0, page.totalPages - 1)}" th:class="${entry == page.number} ? 'active' : ''">
+			<a th:href="@{${baseURL}(${param1_name}=${param1_value}, p=${entry + 1})}" th:text="${iterState.Index + 1}">1</a>
+		</li>
+		<li th:unless="${page.last}">
+			<a th:href="@{${baseURL}(${param1_name}=${param1_value}, p=${page.totalPages})}" title="Letzte Seite">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+	</ul>
+</nav>
+<!--/*
+	END SIMPLE PAGING BAR WITH 1 PARAMETER
+*/-->
+
+<!--/*
+	START SIMPLE PAGING BAR WITH 2 PARAMETERS
+*/-->
+<nav th:fragment="simple_2param (baseURL, param1_name, param1_value, param2_name, param2_value, page)">
+	<ul class="pagination">
+		<li th:unless="${page.first}">
+			<a th:href="@{${baseURL}(${param1_name}=${param1_value}, ${param2_name}=${param2_value}, p=1)}" title="Erste Seite">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li th:if="${page.totalPages > 1}" th:each="entry, iterState : ${#numbers.sequence(0, page.totalPages - 1)}" th:class="${entry == page.number} ? 'active' : ''">
+			<a th:href="@{${baseURL}(${param1_name}=${param1_value}, ${param2_name}=${param2_value}, p=${entry + 1})}" th:text="${iterState.Index + 1}">1</a>
+		</li>
+		<li th:unless="${page.last}">
+			<a th:href="@{${baseURL}(${param1_name}=${param1_value}, ${param2_name}=${param2_value}, p=${page.totalPages})}" title="Letzte Seite">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+	</ul>
+</nav>
+<!--/*
+	END SIMPLE PAGING BAR WITH 2 PARAMETERS
+*/-->

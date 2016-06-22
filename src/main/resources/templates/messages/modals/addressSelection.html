@@ -1,0 +1,87 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">
+		<span aria-hidden="true"> <i class="fa fa-close fa-fw"></i>
+		</span> <span class="sr-only">Schließen</span>
+	</button>
+	<h4 class="modal-title">Empfänger auswählen</h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<form id="addressSelectionForm" action="#" method="GET">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>
+								<input type="checkbox" class="i-checks-all" title="Auswahl für alle umschalten"/>
+							</th>
+							<th>Name</th>
+							<th>Email</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user : ${Users}">
+							<td>
+								<input type="checkbox" class="i-checks" name="address"/>
+								<input type="hidden" name="address_value" th:value="${user.Username}" />
+							</td>
+							<td class="navy" th:text="${user.DisplayName}"></td>
+							<td th:text="${user.Username}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="modal-footer m-t-none">
+	<button type="button" class="btn btn-white" data-dismiss="modal">Abbrechen</button>
+	<button id="btnSaveRecipients" type="button" class="btn btn-primary" data-dismiss="modal">Übernehmen</button>
+</div>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	    $('.i-checks').iCheck({
+	        checkboxClass: 'icheckbox_square-green',
+	        radioClass: 'iradio_square-green',
+	    });
+	    $('.i-checks-all').iCheck({
+	        checkboxClass: 'icheckbox_square-green select-all',
+	        radioClass: 'iradio_square-green',
+	    });
+	    
+	    $('.i-checks-all')
+	    	.on('ifChecked', function() {
+	    		$('.i-checks').iCheck('check');
+	    	})
+	    	.on('ifUnchecked', function() {
+	    		$('.i-checks').iCheck('uncheck');
+	    	});
+	    
+	    $('.i-checks')
+	    	.on('ifUnchecked', function() {
+	    		 $('.i-checks-all').iCheck('indeterminate');
+	    	});
+	});
+
+	
+	$('#btnSaveRecipients').click(function(e) {
+		var recipientsInput = $('input[name="recipients"]');
+		var existingRecipients = recipientsInput.val();
+		if(existingRecipients != '') {
+			existingRecipients += ';';
+		}
+		var newRecipients = '';
+		$('#addressSelectionForm div.checked:not(.select-all)').each(function() {
+			if(newRecipients != '') {
+				newRecipients += ';';
+			}
+			newRecipients += $(this).next('input[name="address_value"]').val();
+		});
+		
+		existingRecipients += newRecipients;
+		recipientsInput.val(existingRecipients);
+		
+		return true;
+	});
+</script>

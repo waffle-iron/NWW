@@ -1,0 +1,43 @@
+<th:block th:fragment="data (User, Profile)">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h5>Kontakt</h5>
+		</div>
+		<div class="ibox-content">
+			<address class="m-b-none" th:if="${User.hasProfile()}">
+				<span th:text="${Profile.Street1}"></span><span class="m-l-xs" th:text="${Profile.HouseNo}">Street</span>
+				<br />
+				<span th:text="${Profile.PostalCode}"></span><span class="m-l-xs" th:text="${Profile.City}">City</span>
+				<div class="m-t-xs" th:if="${Profile.Mobile != null AND Profile.Mobile != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-mobile-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Mobile}">Mobile</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Telephone != null AND Profile.Telephone != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Telephone}">Telephone</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Fax != null AND Profile.Fax != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-fax fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Fax}">Fax</span>							
+				</div>
+			</address>
+		</div>
+		<div class="ibox-footer">
+			<div class="btn-group">
+				<a th:href="'mailto:' + ${User.Username}" class="btn btn-white">
+					<i class="fa fa-envelope"></i> Email
+				</a>
+				<a th:if="${User.hasProfile() AND User.Profile.Homepage != null}" th:href="${User.Profile.Homepage}" 
+						class="btn btn-white" target="_blank">
+					<i class="fa fa-home"></i> Homepage
+				</a>
+			</div>
+		</div>
+	</div>
+</th:block>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="${User.DisplayName} + ' | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+		<link th:href="@{/css/plugins/cropper/cropper.min.css}" rel="stylesheet" />
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/plugins/canvasToBlob/canvas-to-blob.min.js}"></script>
+		<script th:src="@{/js/plugins/cropper/cropper.min.js}"></script>
+		<script th:src="@{/js/custom.js}"></script>
+		<script th:src="@{/js/plugins/loadR/loadR.js}"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('[data-loadr]').loadR();
+			});
+		</script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:include="/users/inc/profileNotifications"></th:block>
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>Mitgliederinformationen</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li>
+						<a th:href="@{/network/users/}">Mitglieder</a>
+					</li>
+					<li class="active">
+						<strong th:text="${User.DisplayName}"></strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="wrapper wrapper-content animated fadeIn">
+			<div class="row m-b-xs m-t-lg">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="profile-image text-center">
+                        <img th:alt="${User.DisplayName}" class="img-circle circle-border m-b-md" alt="profile"
+								th:if="${User.hasProfile() AND User.Profile.hasAttribute('ProfileImageUUID')}" 
+								th:src="@{__'/files' + ${@FileManager.createDownloadUrlSegment(User.Profile.getString('ProfileImageUUID'))} + '_96_96'____}" />
+                        <i th:unless="${User.Profile != null AND User.Profile.hasAttribute('ProfileImageUUID')}" class="fa fa-user user-img placeholder sm m-b-md"></i>
+                   		<a th:if="${CurrentUser.UUID == User.UUID OR CurrentUser.isAdmin()}"
+                   				th:href="@{/network/users/{name}/editProfileImage (name = ${User.Username})}" 
+                   				class="btn btn-warning btn-sm btn-circle edit" 
+                   				title="Profilbild bearbeiten" 
+                   				data-toggle="modal"
+                   				data-target="#modal-lg">
+                   			<i class="fa fa-pencil fa-fw"></i>
+                   		</a>
+                    </div>
+					<div class="profile-info">
+                    	<div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
+							<h2 class="no-margins">
+								<span th:text="${User.DisplayName}" class="m-r-sm">Displayname</span>
+							</h2>
+                    		
+							<h4 th:if="${User.hasProfile() AND (User.Profile.Company != '' OR User.Profile.CompanyUserRole != '')}"
+									th:classappend="${CurrentUser.UUID == User.UUID OR CurrentUser.isAdmin()} ? 'inline-edit' : ''"
+									title="Firma">
+								<span th:if="${User.Profile.CompanyUserRole != null AND User.Profile.CompanyUserRole != ''}" th:text="${User.Profile.CompanyUserRole} + ' bei'"></span>
+								<span th:if="${User.Profile.Company != null AND User.Profile.Company != ''}" th:text="${User.Profile.Company}">Company</span>
+							</h4>
+							<small class="company-description" th:if="${User.hasProfile() AND (User.Profile.CompanyDescription != '' OR User.Profile.CompanyDescription != '')}"
+									th:utext="${User.Profile.CompanyDescription}"
+									th:classappend="${CurrentUser.UUID == User.UUID OR CurrentUser.isAdmin()} ? 'inline-edit' : ''">
+								Company Description
+							</small>
+						</div>
+					</div>
+                </div>
+			</div>
+			<div class="row m-b-md">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<a th:href="@{/network/users/{name}/editProfile(name = ${User.Username})}"
+                 			class="btn btn-primary btn-sm" title="Profil bearbeiten"
+							th:if="${CurrentUser.UUID == User.UUID OR CurrentUser.isAdmin()}">
+						<i class="fa fa-edit fa-fw"></i>
+						Profil bearbeiten
+                    </a>
+					<a href="#" class="hidden" th:attr="data-loadr=@{/network/preferences/inc/profileButton/{uuid} (uuid = ${User.UUID})}"></a>
+                   	<a th:href="@{/network/users/{name}/editCredentials(name = ${User.Username})}"
+                   			class="btn btn-warning btn-sm" title="Zugangsdaten bearbeiten"
+                         	th:if="${CurrentUser.UUID == User.UUID OR CurrentUser.isAdmin()}">
+                         <i class="fa fa-sign-in fa-fw"></i>
+                         Zugangsdaten bearbeiten		
+					</a>
+                   	<a th:if="${CurrentUser.isAdmin() AND CurrentUser.UUID != User.UUID}"
+                  			data-toggle="modal"
+			  				data-target="#modal-lg"	
+							th:href="@{/network/users/{name}/remove (name = ${User.Username})}"
+							title="Mitglied löschen" class="btn btn-danger btn-sm">
+						<i class="fa fa-close"></i>
+						Mitglied löschen
+					</a>
+				</div>
+			</div>
+			<div class="hidden" data-ref="preferences"></div>
+			<div class="row">
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<div th:replace="users/inc/profileContactData :: data(${User}, ${User.Profile})"></div>
+					<div th:replace="users/inc/skills :: fullList(${User})"></div>
+				</div>
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<div th:attr="data-loadr=@{/network/suppliers/byuser/{uname}/shortlist/ (uname = ${User.Username})}"></div>
+				</div>
+				<div class="col-sm-6 col-md-4 col-lg-6">
+					 <div class="ibox float-e-margins">
+                       	<div class="ibox-title">
+                       		<h5>Weitere Informationen</h5>
+                       	</div>
+                        <div class="ibox-content">
+                            <div class="tabs-container">
+								<ul class="nav nav-tabs">
+									<li class="active">
+          		    		    		<a data-toggle="tab" href="#tab-1">
+											<i class="fa fa-sticky-note-o fa-fw"></i>
+											Suchen &amp; Finden
+											(<span th:text="${PinboardEntries.size()}"></span>)
+										</a>
+									</li>
+                     			</ul>
+                       			<div class="tab-content">
+                           			<div id="tab-1" class="tab-pane active">
+                               			<div class="panel-body">
+                               				<div th:replace="pinboard/inc/entriesList :: tableShort (${PinboardEntries})"></div>
+		                                </div>
+           			                </div>
+                       			</div>
+                           	</div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

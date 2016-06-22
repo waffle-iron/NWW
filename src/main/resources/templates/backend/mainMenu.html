@@ -1,0 +1,98 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+            	<div class="logo-element">
+            		NWW
+				</div>
+                <div class="dropdown profile-element">
+					<span th:if="${CurrentUser.hasProfile() AND CurrentUser.Profile.hasAttribute('ProfileImageUUID')}">
+						<img alt="image" class="img-circle profile-img-sm" 
+							th:src="@{__'/files' + ${@FileManager.createDownloadUrlSegment(CurrentUser.Profile.getString('ProfileImageUUID'))} + '_61_61'__}" />
+					</span>
+					<span th:unless="${CurrentUser.hasProfile() AND CurrentUser.Profile.hasAttribute('ProfileImageUUID')}">
+						<img alt="image" class="img-circle profile-img-sm" th:src="@{/img/teaser/user.png}"/>
+					</span>
+					
+                    <a data-toggle="dropdown" class="dropdown-toggle" th:href="@{/network/users/{name}/(name = ${CurrentUser.Username})}">
+						<span class="clear">
+							<span class="block m-t-xs">
+								<strong class="font-bold" th:text="${CurrentUser.DisplayName}">Anzeigename</strong>
+								<b class="caret"></b>
+							</span>
+						</span>
+					</a>
+					<ul class="dropdown-menu animated m-t-xs">
+						<li>
+							<a th:href="@{/network/users/{name}/(name = ${CurrentUser.Username})}">Mein Profil</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a th:href="@{/network/users/{name}/editCredentials (name = ${CurrentUser.Username})}">Zugangsdaten bearbeiten</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li class="hidden-sm hidden-md hidden-lg" th:classappend="${SelectedMenuItem == 'profile'} ? 'active' : ''">
+				<a th:href="@{/network/users/{name}/ (name = ${CurrentUser.Username})}">
+					<i>
+						<img th:if="${CurrentUser.hasProfile() AND CurrentUser.Profile.hasAttribute('ProfileImageUUID')}"
+							alt="image" class="img-circle fa-fw" 
+							th:src="@{__'/files' + ${@FileManager.createDownloadUrlSegment(CurrentUser.Profile.getString('ProfileImageUUID'))}__}" />
+						<img th:unless="${CurrentUser.hasProfile() AND CurrentUser.Profile.hasAttribute('ProfileImageUUID')}"
+							alt="image" class="img-circle fa-fw fa" th:src="@{/img/teaser/user.png}"/>
+					</i>
+					<span class="nav-label">Zum Profil</span>
+				</a>
+			</li>
+			<li th:classappend="${SelectedMenuItem == 'dashboard'} ? 'active' : ''">
+				<a th:href="@{/network}">
+					<i class="fa fa-dashboard fa-fw"></i>
+					<span class="nav-label">Dashboard</span>
+				</a>
+			</li>
+			<li th:classappend="${SelectedMenuItem == 'userList'} ? 'active' : ''">
+				<a th:href="@{/network/users/}">
+					<i class="fa fa-users fa-fw"></i>
+					<span class="nav-label">Mitglieder</span>
+				</a>
+			</li>
+			<li th:classappend="${SelectedMenuItem == 'projects'} ? 'active' : ''">
+				<a th:href="@{/network/projects/}">
+					<i class="fa fa-files-o fa-fw"></i>
+					<span class="nav-label">Projekte</span>
+				</a>
+			</li>
+			<li th:classappend="${SelectedMenuItem == 'suppliers'} ? 'active' : ''">
+				<a th:href="@{/network/suppliers/}">
+					<i class="fa fa-industry fa-fw"></i>
+					<span class="nav-label">Lieferanten</span>
+				</a>
+			</li>
+			<li th:classappend="${SelectedMenuItem == 'pinboard'} ? 'active' : ''">
+				<a th:href="@{/network/pinboard/}">
+					<i class="fa fa-sticky-note fa-fw"></i>
+					<span class="nav-label">Suchen &amp; Finden</span>
+				</a>
+			</li>
+			<li th:if="${CurrentUser.isAdmin()}" th:classappend="${SelectedMenuItem == 'messages'} ? 'active' : ''">
+				<a th:href="@{/network/messages/}">
+					<i class="fa fa-envelope fa-fw"></i>
+					<span class="nav-label">Nachrichten</span>
+				</a>
+			</li>
+			<li th:if="${CurrentUser.isAdmin()}" th:classappend="${SelectedMenuItem == 'system'} ? 'active' : ''">
+				<a href="#">
+					<i class="fa fa-warning fa-fw"></i>
+					<span class="nav-label">System</span>
+					<span class="fa arrow"></span>
+				</a>
+				<ul class="nav nav-second-level collapse">
+					<li th:classappend="${SelectedSubMenuItem == 'system-preferences'} ? 'active' : ''">
+						<a href="#">Einstellungen</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</nav>

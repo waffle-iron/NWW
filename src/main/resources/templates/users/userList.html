@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="'Mitglieder | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/plugins/jscroll/jquery.jscroll.min.js}"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('[data-paging="auto"]').jscroll({
+				    loadingHtml: '<div class="col-xs-12"><div class="sk-spinner sk-spinner-rotating-plane" title="Lade weitere Mitgliederdaten.."></div></div>',
+				    padding: 20,
+				    nextSelector: 'a[data-paging="link"]:last'
+				});
+			});
+		</script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:include="/users/inc/profileNotifications"></th:block>
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>Mitglieder</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li class="active">
+						<strong>Mitglieder</strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		
+		<div class="wrapper wrapper-content	animated fadeIn">
+			<div class="row" th:if="${CurrentUser.isAdmin()}">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="ibox float-e-margins">
+                        <div class="ibox-title">
+							<a th:href="@{/network/users/createCredentials}"
+									class="btn btn-primary" title="Neues Mitglied erstellen"
+									th:if="${CurrentUser.isAdmin()}">
+								<i class="fa fa-user-plus fa-fw"></i>
+		                      	Neues Mitglied erstellen
+							</a>
+                        </div>
+					</div>
+				</div>
+			</div>
+        	<div class="row" data-paging="auto">
+        		<th:block th:fragment="pagingArea">
+        			<th:block th:unless="${CurrentUser.isAdmin()}">
+		            	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" th:each="user : ${Users}">
+		                	<th:block th:include="users/inc/contactBoxes :: withProfileImage(${user}, ${user.Profile})"></th:block>
+		            	</div>
+	            	</th:block>
+					<th:block th:if="${CurrentUser.isAdmin()}">
+		            	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" th:each="user : ${Users}">
+		                	<th:block th:include="users/inc/contactBoxes :: withProfileImageAdmin(${user}, ${user.Profile}, true)"></th:block>
+		            	</div>
+	            	</th:block>
+	            	<a th:if="${Users.hasNext()}" th:href="@{/network/users/ (p = ${Users.nextPageable().PageNumber})}" class="hidden" data-paging="link"></a>
+            	</th:block>
+            	<a th:if="${Users.hasNext()}" th:href="@{/network/users/ (p = ${Users.nextPageable().PageNumber})}" class="hidden" data-paging="link"></a>
+        	</div>
+        </div>
+	</th:block>
+</body>
+</html>

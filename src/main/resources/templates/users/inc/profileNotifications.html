@@ -1,0 +1,40 @@
+<th:block th:if="${param.m != null}">
+	<script type="text/javascript" th:if="${param.m[0] == 'PUS'}">
+		toastr.success('Benutzerprofil aktualisiert!', '&Auml;nderungen &uuml;nommen!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'PIUS'}">
+		toastr.success('Das Profilbild wurde erfolgreich ge&auml;ndert.', '&Auml;nderungen &uuml;nommen!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'PIR'}">
+		toastr.success('Das Profilbild wurde gel&ouml;scht.', '&Auml;nderungen &uuml;bernommen!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'CUS'}">
+		toastr.success('Die Zugangsdaten und Berechtigungen wurden aktualisiert.', '&Auml;nderungen &uuml;bernommen!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'CCS'}">
+		toastr.success('Der neue Benutzer wurde erstellt.', 'Vorgang erfolgreich!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'DUS'}">
+		toastr.success('Der Benutzer wurde gel&ouml;scht.', 'Vorgang erfolgreich!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'SUS'}">
+		toastr.success('F&auml;higkeiten aktualisiert.', 'Vorgang erfolgreich!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'SUUS'}">
+		toastr.success('Lieferanten aktualisiert.', 'Vorgang erfolgreich!');
+	</script>
+</th:block>
+<th:block th:if="${param.e != null}">
+	<script type="text/javascript" th:if="${param.e[0] == 'PUE'}">
+		toastr.error('Benutzerprofil konnte nicht aktualisiert werden!', 'Es ist ein Fehler aufgetreten!');
+	</script>
+	<script type="text/javascript" th:if="${param.e[0] == 'PIR'}">
+		toastr.error('Das Profilbild konnte nicht gel&ouml;scht werden!', 'Es ist ein Fehler aufgetreten!');
+	</script>
+	<script type="text/javascript" th:if="${param.e[0] == 'DUE'}">
+		toastr.error('Der Benutzer konnte nicht gel&ouml;scht werden!', 'Es ist ein Fehler aufgetreten!');
+	</script>
+	<script type="text/javascript" th:if="${param.e[0] == 'SUE'}">
+		toastr.error('Die F&auml;higkeiten konnten nicht aktualisiert werden!', 'Es ist ein Fehler aufgetreten!');
+	</script>
+</th:block>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="'Lieferanten bearbeiten | ' + ${User.DisplayName} + ' | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+		<link th:href="@{/css/plugins/autocomplete/autocomplete.css}" rel="stylesheet" />
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/custom.js}"></script>
+		<script th:src="@{/js/plugins/autocomplete/autocomplete.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+			var newSupplierSnippetURL = /*[[@{/network/suppliers/boxes/usershort}]]*/;
+			$(document).ready(function() {
+				$('#newSupplier').autocomplete({
+					serviceUrl : /*[[@{/network/suppliers/autocomplete}]]*/,
+					paramName: 'q',
+					onSelect : function (suggestion) {
+						// suggestion.value -> texttuelle Anzeige
+						// suggestion.data -> supplier object aus DB
+						addSupplier(suggestion.data.name);
+						cleanup();
+					}
+				});
+				$('#btnNewSupplier').click(function() {
+					var name = $('#newSupplier').val();
+					if(name.length < 2) {
+						toastr.error('Der Name muss mindestens 2 Zeichen lang sein.');
+					}
+					else if (name.length > 100) {
+						toastr.error('Der Name darf nicht länger als 100 Zeichen sein.');
+					}
+					else {
+						addSupplier(name);
+						cleanup();
+					}
+				});
+				$('[data-ref="supplierList"]').on('click', 'button[data-ref]', function() {
+					removeSupplier($(this).attr('data-ref'));
+				});
+			});
+			
+			function checkSupplierIsAssigned(name) {
+				if($('input[name="supplierNames"][value="' + name + '"]').size() > 0) {
+					return true; // element already selected
+				}
+				
+				// element not selected
+				return false;
+			}
+			
+			function addSupplier(name) {
+				if(!checkSupplierIsAssigned(name)) {
+					// add visible list entry
+					$.get(newSupplierSnippetURL + '?n=' + fixedEncodeURIComponent(name), function(html) {
+						$('[data-ref="supplierList"]').append(html);
+					});
+					// add hidden input
+					$('[name="UserSuppliersForm"]').prepend('<input type="hidden" name="supplierNames" value="' + name + '" />');
+				}
+				else {
+					toastr.warning('Dieser Lieferant ist bereits ausgewählt!');
+				}
+			}
+			
+			function removeSupplier(name) {
+				// remove hidden form input
+				$('input:hidden[value="' + name + '"]').remove();
+				// remove display list item
+				$('[data-ref="supplierList"] li[data-ref="' + name + '"]').remove();
+			}
+			
+			function cleanup() {
+				$('#newSupplier').val('').focus();
+			}
+			/*]]>*/
+		</script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>Lieferanten bearbeiten</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li>
+						<a th:href="@{/network/users/}">Mitglieder</a>
+					</li>
+					<li>
+						<a th:href="@{/network/users/{name}/(name = ${User.Username})}"
+								th:text="${User.DisplayName}">
+							Benutzername
+						</a>
+					</li>
+					<li class="active">
+						 <strong>Lieferanten bearbeiten</strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="wrapper wrapper-content animated fadeIn">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Lieferanten</h5>
+                        </div>
+						<div class="ibox-content">
+							<div class="row simple-errors" th:if="${#fields.hasErrors('${UserSuppliersForm.*}')}">
+								<p class="col-xs-12" th:each="err : ${#fields.allErrors()}" th:text="${err}">error message</p>
+							</div>
+							<div class="row m-b-lg">
+								<div class="col-sm-2">
+									<label class="control-label">Deine Lieferanten</label>
+								</div>
+								<div class="col-sm-10">
+									<ul class="supplierList unstyled" data-ref="supplierList">
+										<th:block th:each="Supplier : ${Suppliers}">
+											<li th:replace="suppliers/inc/supplierBoxes :: userShort"></li>
+										</th:block>
+									</ul>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="newSupplier">Neuer Lieferant</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" name="newSupplier" id="newSupplier" maxlength="250" autofocus="autofocus" />
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-primary" id="btnNewSupplier">
+													Hinzufügen
+	                                       		</button>
+	                                      	</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="hr-line-dashed"></div>
+							<form method="POST" th:action="@{/network/suppliers/byuser/{uname}/edit.do (uname = ${User.Username})}" 
+									name="UserSuppliersForm"
+									data-ref="suppliers-form"
+									class="form-horizontal"
+									th:object="${UserSuppliersForm}">
+								<input type="hidden" name="supplierNames" th:value="${supplier.Name}" th:each="supplier : ${Suppliers}" />
+								<div class="form-group">
+									<div class="col-sm-4 col-sm-offset-2">
+										<a th:href="@{/network/users/{name}/ (name = ${User.Username})}" class="btn btn-white">Abbrechen</a>
+										<button class="btn btn-primary" type="submit">Speichern</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

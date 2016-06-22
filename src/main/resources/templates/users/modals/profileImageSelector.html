@@ -1,0 +1,145 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">
+		<span aria-hidden="true">
+			<i class="fa fa-close fa-fw"></i>
+		</span>
+		<span class="sr-only">Close</span>
+	</button>
+	<h4 class="modal-title">Profilbild bearbeiten</h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="image-crop">
+				<img th:if="${User.hasProfile() AND User.Profile.hasAttribute('ProfileImageUUID')}" 
+						th:src="@{__'/files' + ${@FileManager.createDownloadUrlSegment(User.Profile.getString('ProfileImageUUID'))}__}" />
+				<img th:unless="${User.hasProfile() AND User.Profile.hasAttribute('ProfileImageUUID')}" src="" />
+			</div>
+		</div>
+		<div class="col-md-6">
+			<h4>Vorschaubilder</h4>
+			<div class="img-preview img-preview-circle"></div>
+			<h4 class="m-t-md" style="clear: both;">Anleitung</h4>
+			<p>
+				Hier kannst du dein Profilbild bearbeiten. In den Vorschaubildern kannst du erkennen, wie du in den verschiedenen Ansichten 
+				innerhalb der Netzwerkseite dargestellt wirst.
+			</p>
+			<div class="btn-group">
+				<label title="Upload image file" for="inputImage" class="btn btn-warning">
+					<input type="file" accept="image/*" name="file" id="inputImage" class="hide" />
+					Ein neues Bild ausw&auml;hlen
+				</label>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<div class="progress progress-bar-default hidden">
+		<div id="uploadProgress" style="width: 0%" role="progressbar" class="progress-bar">
+			<span class="sr-only">43% Complete (success)</span>
+		</div>
+	</div>
+	<form th:action="@{/network/users/{name}/removeProfileImage.do (name = ${User.Username})}" method="POST"
+			th:if="${User.hasProfile() AND User.Profile.hasAttribute('ProfileImageUUID')}">
+		<button type="submit" class="btn btn-danger pull-left">Bild entfernen</button>
+	</form>
+	<form id="userProfileImageForm" th:action="@{/network/users/{name}/editProfileImage.do (name = ${User.Username})}" method="POST" enctype="multipart/form-data">
+		<button type="button" class="btn btn-white" data-dismiss="modal">Abbrechen</button>
+		<button id="btnSubmitProfileImageForm" type="button" class="btn btn-primary">Speichern</button>
+	</form>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var image = $('.image-crop > img');
+		
+		image.cropper({
+			aspectRatio: 1,
+			preview: '.img-preview'
+		});
+		
+		var $inputImage = $("#inputImage");
+        if (window.FileReader) {
+            $inputImage.change(handleNewFileSelect);
+        } else {
+            $inputImage.addClass("hide");
+        }
+        
+        $('#btnSubmitProfileImageForm').click(ajaxSubmitFile);
+	});
+	
+	function handleNewFileSelect() {
+        var fileReader = new FileReader(),
+        files = this.files,
+        file;
+
+		if (!files.length) {
+		    return;
+		}
+		
+		file = files[0];
+		
+		if (/^image\/\w+$/.test(file.type)) {
+		    fileReader.readAsDataURL(file);
+		    fileReader.onload = function () {
+		        $(this).val("");
+		        $('.image-crop > img').cropper('reset', true).cropper('replace', this.result);
+		    };
+		} else {
+			toastr.success('Bitte w&auml;hle ein Bild aus!', 'Fehlerhaftes Dateiformat!');
+		}
+	}
+	
+	function ajaxSubmitFile(e) {
+		e.preventDefault();
+		
+		
+		var dataUrl = $('.image-crop > img').cropper('getDataURL');
+		if(dataUrl == '') {
+			toastr.error('Bitte wähle ein Bild aus!', 'Speichern nicht möglich');
+			return false;
+		}
+		
+		// disable cancel and submit button
+		var form = $('#userProfileImageForm');
+		form.find('button').attr('disabled', 'disabled');
+		
+		$('#uploadProgress').parent().removeClass('hidden');
+
+		var blob = window.dataURLtoBlob(dataUrl);
+		var url = form.attr('action');
+		var formData = new FormData();	
+		
+		formData.append('file', blob);
+		
+
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false,
+			xhr: function() { 
+	            var myXhr = $.ajaxSettings.xhr();
+	            if(myXhr.upload) { 
+	                myXhr.upload.addEventListener('progress', function(e) {
+	                	if(e.lengthComputable){
+	                		var percent = (e.loaded / e.total) * 100;
+	                        $('#uploadProgress').attr('style', 'width: ' + percent + '%;');
+	                    }
+	                }, false); 
+	            }
+	            return myXhr;
+	        },
+			success: function() {
+				window.location.href = window.location.pathname + '?m=PIUS'; // ProfileImageUploadSuccess
+			},
+			error: function(err) {
+				toastr.error('Das Hochladen deines Profilbildes schlug leider fehl.', 'Fehler');
+				$('#userProfileImageForm button').removeAttr('disabled');
+				$('#uploadProgress').parent().addClass('hidden');
+			}
+		});
+	}
+</script>
+

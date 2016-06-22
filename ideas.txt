@@ -1,0 +1,21 @@
+- Nachrichten
+- eigener Dateispeicher
+- mergen des Mailaccounts mit Nachrichten
+- weitere Kontaktinformationen inkl. Verlinkung:
+    * Skype
+    * Facebook
+    * Twitter
+    * G+
+- Lieferanten
+    * müssen irgendwie administriert werden, um Schreibfehler, Duplikate u.Ä. zu vermeiden
+    * sollten ausführlich mich Logo, Anschrift, Beschreibung sein
+- Galerien
+- Projekte
+- eigene Inhalte teilen (Freigabe-Link)
+- Privatsphäre (was wird angezeigt, worüber werde ich benachrichtigt)
+- Notizen
+- Administration
+    * Scheduler-Info
+    * Systeminfo
+    * Datenbank Info
+    * Seitennutzung

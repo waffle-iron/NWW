@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="'Projekte | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+	</th:block>
+	<th:block th:fragment="scripts">
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:include="/projects/inc/projectNotifications"></th:block>
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>Projekte</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li class="active">
+						<strong>Projekte</strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="wrapper wrapper-content">
+					<div class="ibox">
+						<div class="ibox-title">
+							<h5>Übersicht über alle Projekte</h5>
+							<div class="ibox-tools">
+								<a th:href="@{/network/projects/new}" class="btn btn-primary btn-xs">
+									<i class="fa fa-plus fa-fw"></i>
+									<span>Neues Projekt erstellen</span>
+								</a>
+							</div>
+						</div>
+						<div class="ibox-content">
+							<div class="row m-b-sm m-t-sm">
+                                <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+                                   	<form th:action="@{network/projects/}" method="GET"
+                                   			class="form-horizontal">
+	                                    <div class="input-group">
+	                                    	<input type="text" placeholder="Projekt suchen..." name="q" class="input-sm form-control" /> 
+	                                    	<span class="input-group-btn">
+	                                        	<button type="submit" class="btn btn-sm btn-primary">Suchen</button> 
+	                                       	</span>
+										</div>
+                                   	</form>
+								</div>
+							</div>
+							<div class="project-list">
+								<table class="table table-hover">
+									<tbody>
+										<tr>
+											<td class="project-title">
+                                            	<a href="project_detail.html">Contract with Zender Company</a>
+                                            	<br/>
+                                            	<small>Created 14.08.2014</small>
+                                        	</td>
+											<td class="project-people">
+                                        	    <a href="">
+                                        	    	<img alt="image" class="img-circle" src="img/a3.jpg" />
+                                       	    	</a>
+                                        	</td>
+                                        	<td class="project-actions">
+                                            	<a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
+                                            	<a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
+                                        	</td>
+                                    	</tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

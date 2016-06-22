@@ -1,0 +1,16 @@
+<th:block th:if="${param.m != null}">
+	<script type="text/javascript" th:if="${param.m[0] == 'PESC'}">
+		toastr.success('Eintrag erfolgreich erstellt!', 'Es wurden alle Mitglieder benachrichtigt!');
+	</script>
+	<script type="text/javascript" th:if="${param.m[0] == 'PECS'}">
+		toastr.success('Eintrag schließen!', 'Der Eintrag wurde erfolgreich geschlossen.');
+	</script>
+</th:block>
+<th:block th:if="${param.e != null}">
+	<script type="text/javascript" th:if="${param.e[0] == 'PENE'}">
+		toastr.error('Fehler im Benachrichtigungssystem!', 'Es konnten nicht alle Mitglieder über den neuen Eintrag benachrichtigt werden!');
+	</script>
+	<script type="text/javascript" th:if="${param.e[0] == 'PENF'}">
+		toastr.error('Fehler', 'Der Eintrag konnte nicht gefunden werden!');
+	</script>
+</th:block>

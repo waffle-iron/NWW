@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="'Einstellungen bearbeiten | ' + ${User.DisplayName} + ' | NETZWERK wohnen'"></title>
+	<th:block th:fragment="styles">
+	</th:block>
+	<th:block th:fragment="scripts">
+		<script th:src="@{/js/custom.js}"></script>
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<div class="row wrapper border-bottom white-bg page-heading">
+			<div class="col-lg-9">
+				<h2>Einstellungen bearbeiten</h2>
+				<ol class="breadcrumb">
+					<li>
+						<a th:href="@{/network}">Dashboard</a>
+					</li>
+					<li>
+						<a th:href="@{/network/users/}">Mitglieder</a>
+					</li>
+					<li>
+						<a th:href="@{/network/users/{name}/(name = ${User.Username})}"
+								th:text="${User.DisplayName}">
+							Benutzername
+						</a>
+					</li>
+					<li class="active">
+						 <strong>Einstellungen bearbeiten</strong>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<div class="wrapper wrapper-content animated fadeIn">
+			<div class="row">
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

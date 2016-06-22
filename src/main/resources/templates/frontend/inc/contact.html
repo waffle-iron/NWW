@@ -1,0 +1,50 @@
+<section id="contact" class="contact">
+	<div class="container">
+   		<div class="row m-b-lg">
+       		<div class="col-lg-12 text-center">
+           		<div class="navy-line"></div>
+           		<h1>Kontakt</h1>
+       		</div>
+   		</div>
+      	<div class="row m-b-lg">
+			<div class="col-sm-5 col-sm-offset-1">
+				<p class="description">
+						Sie haben Fragen rund um das Netzwerk?
+					</p>
+					<p class="description">
+						Schreiben Sie uns doch eine Nachricht!
+						<br />
+						Wir sind bem&uuml;ht Ihnen schnellstm&ouml;glich zu antworten.
+					</p>					
+			</div>
+			<div class="col-sm-6">
+				<form method="POST" th:action="@{/sendContact.do}" th:object="${ContactForm}" data-async="true">
+					<label>Ihre Kontaktanfrage</label>
+					<div class="row">
+						<div class="col-sm-6 form-group" th:classappend="${#fields.hasErrors('Name')} ? has-error">
+							<input type="text" th:field="*{Name}" class="form-control" placeholder="Name" required="required"/>
+						</div>
+						<div class="col-sm-6 form-group" th:classappend="${#fields.hasErrors('Email')} ? has-error">
+							<input type="email" th:field="*{Email}" class="form-control" placeholder="Email" required="required"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 form-group" th:classappend="${#fields.hasErrors('Message')} ? has-error">
+							<label for="description">Bitte schildern Sie kurz ihr Anliegen:</label>
+							<textarea id="description" th:field="*{Message}" class="form-control textarea-large" required="required"></textarea>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-12">
+							<button class="btn btn-primary pull-right" type="submit">
+								<strong>
+									Anfrage absenden
+								</strong>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+       	</div>
+   	</div>
+</section>

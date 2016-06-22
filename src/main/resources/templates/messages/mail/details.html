@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	th:include="backend/layout :: layout">
+<head>
+	<title th:fragment="title" th:text="${#strings.abbreviate(Mail.Subject, 30) + ' | info@netzwerkwohnen.org | NETZWERK wohnen'}"></title>
+	<th:block th:fragment="styles">
+	</th:block>
+	<th:block th:fragment="scripts">
+	</th:block>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<th:block th:include="/messages/inc/messageNotifications"></th:block>
+			<div class="row wrapper border-bottom white-bg page-heading">
+				<div class="col-lg-9">
+					<h2 th:text="${'Nachricht: ' + Mail.Subject}">Nachrichten</h2>
+					<ol class="breadcrumb">
+						<li>
+							<a th:href="@{/network}">Dashboard</a>
+						</li>
+						<li>
+							<a th:href="@{/network/messages/}">Nachrichten</a>
+						</li>
+						<li class="active">
+							<strong>Details: <span th:text="${Mail.Subject}"></span></strong>
+						</li>
+					</ol>
+				</div>
+			</div>
+			<div class="wrapper wrapper-content">
+	        	<div class="row">
+	            	<div class="col-lg-3" th:include="messages/inc/toolbar"></div>
+	            	<div class="col-lg-9 animated fadeIn">
+            			<div class="mail-box-header">
+			                <h2>
+			                    Nachricht anzeigen
+			                </h2>
+			                <div class="mail-tools m-t-md">
+			                    <h3>
+			                        <span class="font-noraml">Betreff: </span><span th:text="${Mail.Subject}"></span>
+			                    </h3>
+			                    <h5>
+			                        <span class="pull-right font-noraml" th:if="${Mail.SendDate != null}" th:text="${#dates.format(Mail.SendDate, 'dd.MMM.yyyy HH:mm')}"></span>
+			                        <span class="font-noraml">an: </span>
+			                    </h5>
+			                    <div>
+			                    	<span th:each="rec : ${Mail.Recipients}" th:utext="${rec + '&nbsp;'}"></span>
+			                    </div>
+               				</div>
+           				</div>
+           				<div class="mail-box">
+			                <div class="mail-body" th:utext="${Mail.Content}"></div>
+                    			<div class="clearfix"></div>
+		                </div>
+	                </div>
+  				</div>
+			</div>
+		</th:block>
+	</body>
+</html>

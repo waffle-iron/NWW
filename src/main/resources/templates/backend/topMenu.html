@@ -1,0 +1,26 @@
+<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+	<div class="navbar-header">
+		<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void();" title="Men&uuml;anzeige umschalten">
+			<i class="fa fa-bars"></i>
+		</a>
+                
+		<form role="search" class="navbar-form-custom" method="GET" th:action="@{/network/search}">
+			<div class="form-group">
+				<input type="text" maxlength="100" placeholder="Suchen..." class="form-control" name="q" id="top-search" />
+			</div>
+		</form>
+	</div>
+	<ul class="nav navbar-top-links navbar-right">
+		<li>
+			<form method="POST" th:action="@{/logout}">
+				<!--/*
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				*/-->
+				<button class="btn btn-link btn-logout" type="submit">
+					<i class="fa fa-sign-out"></i>
+					Abmelden
+				</button>
+			</form>
+		</li>
+	</ul>
+</nav>

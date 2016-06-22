@@ -1,0 +1,6 @@
+<script type="text/javascript" th:if="${param.e != null AND param.e[0] == 'SE'}">
+	toastr.error('Es ist ein schwerer Systemfehler aufgetreten!', 'Unerwarteter Zustand');
+</script>
+<script type="text/javascript" th:if="${param.e != null AND param.e[0] == 'UNF'}">
+	toastr.error('Der Benutzer konnte nicht gefunden werden!', 'Es ist ein Fehler aufgetreten!');
+</script>

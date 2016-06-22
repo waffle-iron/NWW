@@ -1,0 +1,190 @@
+<th:block th:fragment="withProfileImage (User, Profile)">
+	<div class="contact-box center-version fixed-height">
+		<a th:href="@{/network/users/{name}/(name = ${User.Username})}">
+			<th:block th:include="users/inc/profileImages :: md (${User})"></th:block>
+			<h3 class="m-b-xs">
+				<strong th:text="${User.DisplayName}"></strong>
+			</h3>
+			<div class="font-bold" th:text="${#strings.defaultString(Profile.CompanyUserRole, '&nbsp;')}" th:if="${Profile != null}">role</div>
+			<address class="m-t-md" th:if="${User.Profile != null}">
+				<span th:text="${Profile.Street1}"></span><span class="m-l-xs" th:text="${Profile.HouseNo}">Street</span>
+				<br />
+				<span th:text="${Profile.PostalCode}"></span><span class="m-l-xs" th:text="${Profile.City}">City</span>
+				<div class="m-t-xs" th:if="${Profile.Mobile != null AND Profile.Mobile != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-mobile-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Mobile}">Mobile</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Telephone != null AND Profile.Telephone != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Telephone}">Telephone</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Fax != null AND Profile.Fax != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-fax fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Fax}">Fax</span>							
+				</div>
+			</address>
+		</a>
+		<div class="contact-box-footer">
+			<div class="m-t-xs btn-group">
+				<a th:href="'mailto:' + ${User.Username}" class="btn btn-xs btn-white">
+					<i class="fa fa-envelope"></i> Email
+				</a>
+				<a th:if="${User.hasProfile() AND User.Profile.Homepage != null}" th:href="${User.Profile.Homepage}" 
+						class="btn btn-xs btn-white" target="_blank">
+					<i class="fa fa-home"></i> Homepage
+				</a>
+			</div>
+		</div>
+	</div>
+</th:block>
+<th:block th:fragment="withoutProfileHeader (User, Profile)">
+	<th:block th:replace=":: withoutProfileHeaderAdmin (${User}, ${Profile}, false)"></th:block>
+</th:block>
+<th:block th:fragment="shortInfo (User, Profile)">
+	<div class="contact-box center-version fixed-height">
+		<a th:href="@{/network/users/{name}/(name = ${User.Username})}">
+			<th:block th:include="users/inc/profileImages :: md (${User})"></th:block>
+			<h3 class="m-b-xs">
+				<strong th:text="${User.DisplayName}"></strong>
+			</h3>
+			<div class="font-bold" th:text="${#strings.defaultString(Profile.CompanyUserRole, '&nbsp;')}" th:if="${Profile != null}">role</div>
+			<address class="m-t-md" th:if="${User.hasProfile()}">
+				<div class="m-t-xs" th:if="${Profile.Mobile != null AND Profile.Mobile != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-mobile-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Mobile}">Mobile</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Telephone != null AND Profile.Telephone != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Telephone}">Telephone</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Fax != null AND Profile.Fax != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-fax fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Fax}">Fax</span>							
+				</div>
+			</address>
+		</a>
+		<div class="contact-box-footer">
+			<div class="m-t-xs btn-group">
+				<a th:href="'mailto:' + ${User.Username}" class="btn btn-xs btn-white">
+					<i class="fa fa-envelope"></i> Email
+				</a>
+				<a th:if="${User.hasProfile() AND User.Profile.Homepage != null}" th:href="${User.Profile.Homepage}" 
+						class="btn btn-xs btn-white" target="_blank">
+					<i class="fa fa-home"></i> Homepage
+				</a>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+<th:block th:fragment="withProfileImageAdmin (User, Profile, ShowAdminOptions)">
+	<div class="contact-box center-version fixed-height">
+		<a data-toggle="modal"
+  				data-target="#modal-lg"	
+				th:href="@{/network/users/{name}/remove (name = ${User.Username})}"
+				title="Mitglied l&ouml;schen" class="btn btn-danger btn-circle remove-user" th:if="${ShowAdminOptions}">
+			<i class="fa fa-remove fa-fw"></i>
+		</a>
+		<a th:href="@{/network/users/{name}/(name = ${User.Username})}">
+			<th:block th:include="users/inc/profileImages :: md (${User})"></th:block>
+			<h3 class="m-b-xs">
+				<strong th:text="${User.DisplayName}"></strong>
+			</h3>
+			<div class="font-bold" th:text="${#strings.defaultString(Profile.CompanyUserRole, '&nbsp;')}" th:if="${Profile != null}">role</div>
+			<address class="m-t-md" th:if="${User.Profile != null}">
+				<span th:text="${Profile.Street1}"></span><span class="m-l-xs" th:text="${Profile.HouseNo}">Street</span>
+				<br />
+				<span th:text="${Profile.PostalCode}"></span><span class="m-l-xs" th:text="${Profile.City}">City</span>
+				<div class="m-t-xs" th:if="${Profile.Mobile != null AND Profile.Mobile != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-mobile-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Mobile}">Mobile</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Telephone != null AND Profile.Telephone != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Telephone}">Telephone</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Fax != null AND Profile.Fax != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-fax fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Fax}">Fax</span>							
+				</div>
+			</address>
+		</a>
+		<div class="contact-box-footer">
+			<div class="m-t-xs btn-group">
+				<a th:href="'mailto:' + ${User.Username}" class="btn btn-xs btn-white">
+					<i class="fa fa-envelope"></i> Email
+				</a>
+				<a th:if="${User.hasProfile() AND User.Profile.Homepage != null}" th:href="${User.Profile.Homepage}" 
+						class="btn btn-xs btn-white" target="_blank">
+					<i class="fa fa-home"></i> Homepage
+				</a>
+			</div>
+		</div>
+	</div>
+</th:block>
+
+<th:block th:fragment="withoutProfileHeaderAdmin (User, Profile, ShowAdminOptions)">
+	<div class="contact-box">
+		<a data-toggle="modal"
+  				data-target="#modal-lg"	
+				th:href="@{/network/users/{name}/remove (name = ${User.Username})}"
+				title="Mitglied l&ouml;schen" class="btn btn-danger btn-circle remove-user" th:if="${ShowAdminOptions}">
+			<i class="fa fa-close"></i>
+		</a>
+		<a href="javascript:void();" style="cursor: default;">
+			<h3>Kontakt</h3>
+			<address class="m-t-md" th:if="${User.hasProfile()}">
+				<span th:text="${Profile.Street1}"></span><span class="m-l-xs" th:text="${Profile.HouseNo}">Street</span>
+				<br />
+				<span th:text="${Profile.PostalCode}"></span><span class="m-l-xs" th:text="${Profile.City}">City</span>
+				<div class="m-t-xs" th:if="${Profile.Mobile != null AND Profile.Mobile != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-mobile-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Mobile}">Mobile</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Telephone != null AND Profile.Telephone != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-phone fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Telephone}">Telephone</span>							
+				</div>
+				<div class="m-t-xs" th:if="${Profile.Fax != null AND Profile.Fax != ''}">
+					<abbr title="Mobiltelefon">
+						<i class="fa fa-fax fa-fw"></i>
+					</abbr>
+					<span th:text="${Profile.Fax}">Fax</span>							
+				</div>
+			</address>
+		</a>
+		<div class="contact-box-footer">
+			<div class="m-t-xs btn-group">
+				<a th:href="'mailto:' + ${User.Username}" class="btn btn-xs btn-white">
+					<i class="fa fa-envelope"></i> Email
+				</a>
+				<a th:if="${User.hasProfile() AND User.Profile.Homepage != null}" th:href="${User.Profile.Homepage}" 
+						class="btn btn-xs btn-white" target="_blank">
+					<i class="fa fa-home"></i> Homepage
+				</a>
+			</div>
+		</div>
+	</div>
+</th:block>
