@@ -83,6 +83,13 @@ public class ProjectController extends AbstractApplicationController {
 		return TEMPLATE_CREATE_PROJECT;
 	}
 	
+	/**
+	 * Adds a new participant template to the passed form.
+	 * @param form
+	 * @param mode
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/addParticipant.do", method = RequestMethod.POST)
 	public String addParticipant(
 			@ModelAttribute("ProjectForm") ProjectForm form, 
@@ -98,6 +105,14 @@ public class ProjectController extends AbstractApplicationController {
 		return TEMPLATE_CREATE_PROJECT;
 	}
 	
+	/**
+	 * Removes the participant at the removeIndex from the passed form.
+	 * @param form
+	 * @param removeIndex
+	 * @param mode
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/removeParticipant.do", method = RequestMethod.POST)
 	public String removeParticipant(
 			@ModelAttribute("ProjectForm") ProjectForm form,
@@ -114,9 +129,16 @@ public class ProjectController extends AbstractApplicationController {
 		return TEMPLATE_CREATE_PROJECT;
 	}
 	
+	/**
+	 * Adds a new supplier template to the passed form.
+	 * @param form
+	 * @param mode
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/addSupplier.do", method = RequestMethod.POST)
 	public String addSupplier(
-			@ModelAttribute("ProejctForm") ProjectForm form,
+			@ModelAttribute("ProjectForm") ProjectForm form,
 			@RequestParam(required = false, defaultValue = REDIRECT_AFTER_ADD_MODE_CREATE) String mode,
 			Model model) {
 		
@@ -129,6 +151,14 @@ public class ProjectController extends AbstractApplicationController {
 		return TEMPLATE_CREATE_PROJECT;
 	}
 	
+	/**
+	 * Removes the supplier with at the removeIndex position from the passed form.
+	 * @param form
+	 * @param removeIndex
+	 * @param mode
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/removeSupplier.do", method = RequestMethod.POST)
 	public String removeSupplier(
 			@ModelAttribute("ProjectForm") ProjectForm form,

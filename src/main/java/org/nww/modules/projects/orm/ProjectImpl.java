@@ -211,7 +211,7 @@ public class ProjectImpl extends AbstractExtensiblePersistentObject implements P
 		ProjectSupplierData psd = null;
 		
 		for (ProjectSupplierData data : getSuppliers()) {
-			if(data.getSupplierUUID().equals(s.getUUID())) {
+			if(s.equals(data.getSupplier())) {
 				psd = data;
 				break;
 			}

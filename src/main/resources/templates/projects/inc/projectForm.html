@@ -119,17 +119,17 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="participant, stat : *{participants}">
+								<tr th:each="participant, stat : *{Participants}">
 									<td>
-										<th:block th:if="*{participants[__${stat.index}__].User != null}" th:include="users/inc/profileImages :: xs (*{participants[__${stat.index}__].User})"></th:block>
+										<th:block th:if="*{participants[__${stat.index}__].User != null}" th:include="users/inc/profileImages :: xs (*{Participants[__${stat.index}__].User})"></th:block>
 									</td>
 									<td>
-										<select th:field="*{participants[__${stat.index}__].userUUID}" class="form-control"> 
+										<select th:field="*{Participants[__${stat.index}__].UserUUID}" class="form-control"> 
 											<option th:each="user : ${Users}" th:value="${user.UUID}" th:text="${user.DisplayName}"></option>
 										</select>
 									</td>
 									<td>
-										<th:block th:replace="common/formFragments :: inputText('participants[' + __${stat.index}__ + '].description', '', 250,'hidden-xs hidden-sm hidden-md hidden-lg', '', false)"></th:block>
+										<th:block th:replace="common/formFragments :: inputText('Participants[' + __${stat.index}__ + '].Description', '', 250,'hidden-xs hidden-sm hidden-md hidden-lg', '', false)"></th:block>
 									</td>
 									<td>
 										<button type="submit"
@@ -173,9 +173,6 @@
 							<thead>
 								<tr>
 									<th>
-										Logo
-									</th>
-									<th>
 										Name
 									</th>
 									<th>
@@ -187,17 +184,12 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
+								<tr th:each="supplier, stat : *{Suppliers}">
 									<td>
-										<img src="img/gallery/2s.jpg" />
+										<th:block th:replace="common/formFragments :: inputText('Suppliers[' + __${stat.index}__ + '].Name', '', 250,'hidden-xs hidden-sm hidden-md hidden-lg', '', false)"></th:block>
 									</td>
 									<td>
-										Super Lieferant
-									</td>
-									<td>
-										<!--/*
-										<th:block th:replace="common/formFragments :: inputText('suppliers.description', '', 250,'hidden-xs hidden-sm hidden-md hidden-lg', '', false)"></th:block>
-										*/-->
+										<th:block th:replace="common/formFragments :: inputText('Suppliers[' + __${stat.index}__ + '].Description', '', 250,'hidden-xs hidden-sm hidden-md hidden-lg', '', false)"></th:block>
 									</td>
 									<td>
 										<button type="submit"
