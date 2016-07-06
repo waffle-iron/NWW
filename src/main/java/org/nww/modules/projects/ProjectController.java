@@ -9,11 +9,13 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.nww.app.AbstractApplicationController;
+import org.nww.app.Constants;
 import org.nww.modules.projects.orm.Project;
 import org.nww.modules.projects.orm.ProjectManager;
 import org.nww.modules.projects.orm.ProjectParticipantData;
 import org.nww.modules.projects.orm.ProjectSupplierData;
 import org.nww.modules.users.orm.User;
+import org.nww.services.web.URLUtilsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,16 +39,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping(value = "/network/projects")
 public class ProjectController extends AbstractApplicationController {
 	
+	/**
+	 * 
+	 */
+	private static final String PROJECT_NOT_FOUND = "PNF";
 	private static final String TEMPLATE_CREATE_PROJECT = "projects/createProject";
 	private static final String TEMPLATE_EDIT_PROJECT = "projects/editProject";
 	private static final String REDIRECT_AFTER_ADD_MODE_CREATE = "create";
 	private static final String REDIRECT_AFTER_ADD_MODE_EDIT = "edit";
+	private static final String REDIRECT_AFTER_ERROR = "redirect:/network/projects/";
 	
 	@Resource(name = "ProjectManager")
 	private ProjectManager projectMgr;
 	
 	@Resource(name = "ProjectFormDataMapper")
 	private ProjectFormDataMapper mapper;
+	
+	@Resource(name = "URLUtilsService")
+	private URLUtilsService urlUtils;
 	
 	@ModelAttribute("Users")
 	public List<? extends User> populateUsers() {
@@ -67,6 +78,24 @@ public class ProjectController extends AbstractApplicationController {
 		model.addAttribute("Projects", projects.getContent());
 		
 		return "projects/projectList";
+	}
+	
+	@RequestMapping(value = "/{userName}/{projectName}/")
+	public String showDetails(@PathVariable("userName") String userName, 
+			@PathVariable("projectName") String projectName,
+			RedirectAttributes redirectAttributes,
+			Model model) {
+		Project p = projectMgr.findByNameAndOwner(urlUtils.decodeURLSegments(projectName), getUserManager().findByUsername(userName));
+		
+		if(null == p) {
+			redirectAttributes.addAttribute(Constants.REDIRECT_PARAM_NAME_ERROR, PROJECT_NOT_FOUND);
+			return REDIRECT_AFTER_ERROR;
+		}
+		
+		model.addAttribute("Project", p);
+		
+		// add template, links, etc..
+		return "projects/details";
 	}
 	
 	/**
@@ -192,7 +221,7 @@ public class ProjectController extends AbstractApplicationController {
 		if(!bindingResult.hasErrors()) {
 			projectMgr.save(mapper.mapToPersistentObject(form));
 			
-			redirectAttributes.addAttribute("PCS", true);
+			redirectAttributes.addAttribute(Constants.REDIRECT_PARAM_NAME_MESSAGE, "PCS");
 			return "redirect:/network/projects/";
 		}
 		

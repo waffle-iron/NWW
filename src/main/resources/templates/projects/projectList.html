@@ -59,9 +59,9 @@
 									<tbody>
 										<tr th:each="project : ${Projects}">
 											<td class="project-title">
-                                            	<a href="project_detail.html" th:text="${project.Name}">name</a>
+                                            	<a th:href="@{/network/projects/{user}/{project}/ (user = ${project.Owner.Username}, project = ${@URLUtilsService.encodeURLSegments(project.Name)})}" th:text="${project.Name}">name</a>
                                             	<br/>
-                                            	<small th:text="${#dates.format(project.ProjectStart, 'dd.MM.yyyy')}">start</small>
+                                            	<small th:text="${#dates.format(project.Start, 'dd.MM.yyyy')}">start</small>
                                         	</td>
 											<td class="project-people">
                                         	    <a th:href="@{/network/users/{name}/ (name = ${participant.User.Username})}" th:each="participant : ${project.Participants}">
