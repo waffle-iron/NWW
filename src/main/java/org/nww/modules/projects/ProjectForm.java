@@ -15,12 +15,14 @@ import org.nww.modules.projects.orm.Project;
 import org.nww.modules.projects.orm.ProjectFileData;
 import org.nww.modules.projects.orm.ProjectParticipantData;
 import org.nww.modules.projects.orm.ProjectSupplierData;
+import org.nww.modules.projects.validation.UniqueName;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Provides form validation fields for {@link Project} instances.
  * @author mga
  */
+@UniqueName
 public class ProjectForm extends AbstractPersistentObjectForm {
 	@Length(min = 1, max = 100)
 	private String name;

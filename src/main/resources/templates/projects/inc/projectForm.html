@@ -1,6 +1,7 @@
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 <input type="hidden" th:field="*{UUID}" />
 <input type="hidden" th:unless="${CurrentUser.isAdmin()}" name="ownerUUID" th:value="${CurrentUser.UUID}" />
+<input type="hidden" name="mode" th:value="${mode != null} ? ${mode} : 'create'" />
 
 <div class="col-lg-12 col-md-12">
 	<p>
@@ -58,6 +59,10 @@
 							</div>
 						</div>		
 						<div class="hr-line-dashed" th:if="${CurrentUser.isAdmin()}"></div>
+						
+						<div th:if="${#fields.hasErrors('global')}">
+							<label class="error" th:each="err : ${#fields.errors('global')}" th:text="${err}">Input is incorrect</label>
+						</div>
 						<div class="form-group">
 							<th:block th:replace="common/formFragments :: inputTextWithHelp('name', 'Name', 100,'col-sm-2 control-label', 'col-xs-12 col-sm-12 col-md-8 col-lg-6', true, 'Projektnamen m&uuml;ssen eindeutig sein.')"></th:block>
 						</div>

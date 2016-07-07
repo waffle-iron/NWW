@@ -47,7 +47,7 @@ public class ProjectController extends AbstractApplicationController {
 	private static final String TEMPLATE_EDIT_PROJECT = "projects/editProject";
 	private static final String REDIRECT_AFTER_ADD_MODE_CREATE = "create";
 	private static final String REDIRECT_AFTER_ADD_MODE_EDIT = "edit";
-	private static final String REDIRECT_AFTER_ERROR = "redirect:/network/projects/";
+	private static final String REDIRECT_TO_PROJECT_LIST = "redirect:/network/projects/";
 	
 	@Resource(name = "ProjectManager")
 	private ProjectManager projectMgr;
@@ -80,7 +80,15 @@ public class ProjectController extends AbstractApplicationController {
 		return "projects/projectList";
 	}
 	
-	@RequestMapping(value = "/{userName}/{projectName}/")
+	/**
+	 * Show all project details in one view.
+	 * @param userName
+	 * @param projectName
+	 * @param redirectAttributes
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/{userName}/{projectName}/", method = RequestMethod.GET)
 	public String showDetails(@PathVariable("userName") String userName, 
 			@PathVariable("projectName") String projectName,
 			RedirectAttributes redirectAttributes,
@@ -89,7 +97,7 @@ public class ProjectController extends AbstractApplicationController {
 		
 		if(null == p) {
 			redirectAttributes.addAttribute(Constants.REDIRECT_PARAM_NAME_ERROR, PROJECT_NOT_FOUND);
-			return REDIRECT_AFTER_ERROR;
+			return REDIRECT_TO_PROJECT_LIST;
 		}
 		
 		model.addAttribute("Project", p);
@@ -110,6 +118,31 @@ public class ProjectController extends AbstractApplicationController {
 		model.addAttribute("ProjectForm", form);
 		
 		return TEMPLATE_CREATE_PROJECT;
+	}
+	
+	@RequestMapping(value = "/{userName}/{projectName}/edit", method = RequestMethod.GET)
+	public String edit(
+			@PathVariable("userName") String userName,
+			@PathVariable("projectName") String projectName,
+			RedirectAttributes redirectAttributes,
+			Model model) {
+		
+		Project p = projectMgr.findByNameAndOwner(urlUtils.decodeURLSegments(projectName), getUserManager().findByUsername(userName));
+		
+		// product exists and credentials check credentials
+		// TODO: handle failed credentials separatly
+		User current = populateCurrentUser();
+		if(null == p || !current.isAdmin() || !current.equals(p.getOwner())) {
+			redirectAttributes.addAttribute(Constants.REDIRECT_PARAM_NAME_ERROR, PROJECT_NOT_FOUND);
+			return REDIRECT_TO_PROJECT_LIST;
+		}
+
+		ProjectForm form = mapper.mapToForm(p);
+		
+		model.addAttribute("ProjectForm", form);
+		model.addAttribute("mode", REDIRECT_AFTER_ADD_MODE_EDIT);
+		
+		return TEMPLATE_EDIT_PROJECT;
 	}
 	
 	/**
@@ -222,9 +255,34 @@ public class ProjectController extends AbstractApplicationController {
 			projectMgr.save(mapper.mapToPersistentObject(form));
 			
 			redirectAttributes.addAttribute(Constants.REDIRECT_PARAM_NAME_MESSAGE, "PCS");
-			return "redirect:/network/projects/";
+			return REDIRECT_TO_PROJECT_LIST;
 		}
 		
 		return TEMPLATE_CREATE_PROJECT;
+	}
+
+	/**
+	 * Save an edited project.
+	 * @param form
+	 * @param bindingResult
+	 * @param redirectAttributes
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/edit.do", method = RequestMethod.POST)
+	public String editDo(
+			@Valid @ModelAttribute("ProjectForm") ProjectForm form,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			Model model) {
+		
+		if(!bindingResult.hasErrors()) {
+			projectMgr.save(mapper.mapToPersistentObject(form));
+			
+			redirectAttributes.addAttribute(Constants.REDIRECT_PARAM_NAME_MESSAGE, "PES");
+			return REDIRECT_TO_PROJECT_LIST;
+		}
+
+		return TEMPLATE_EDIT_PROJECT;
 	}
 }
