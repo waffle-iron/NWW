@@ -69,10 +69,12 @@
                                        	    	</a>
                                         	</td>
                                         	<td class="project-actions">
-                                        		<!--/*
-                                            	<a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
-                                            	<a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
-                                        		*/-->
+                                            	<a th:if="${CurrentUser.isAdmin() OR CurrentUser.UUID == project.Owner.UUID}"
+                                            			th:href="@{/network/projects/{user}/{project}/edit (user = ${project.Owner.Username}, project = ${@URLUtilsService.encodeURLSegments(project.Name)})}" 
+                                            			class="btn btn-white btn-sm">
+                                           			<i class="fa fa-pencil"></i>
+                                         			bearbeiten
+                                         		</a>
                                         	</td>
                                     	</tr>
                                     </tbody>

@@ -25,6 +25,7 @@ public class ProjectFormDataMapper implements FormDataMapper<ProjectForm, Projec
 	public ProjectForm mapToForm(Project p) {
 		ProjectForm f = new ProjectForm();
 		
+		f.setUUID(p.getUUID());
 		f.setName(p.getName());
 		f.setDescription(p.getDescription());
 		f.setOwnerUUID(p.getOwnerUUID());
@@ -54,6 +55,7 @@ public class ProjectFormDataMapper implements FormDataMapper<ProjectForm, Projec
 	 */
 	@Override
 	public Project mapToExistingPersistentObject(ProjectForm f, Project p) {
+		p.setUUID(f.getUUID());
 		p.setName(f.getName());
 		p.setDescription(f.getDescription());
 		p.setOwnerUUID(f.getOwnerUUID());
