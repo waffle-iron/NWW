@@ -20,6 +20,7 @@ apply plugin: 'eclipse-wtp'
 apply plugin: 'spring-boot' 
 apply plugin: 'io.spring.dependency-management' 
 apply plugin: 'war'
+apply plugin: 'jacoco'
 
 
 war {
@@ -60,6 +61,9 @@ dependencies {
     compile("org.jsoup:jsoup:1.8.3")
     
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    
+     testCompile("junit:junit")
+     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 
@@ -72,4 +76,9 @@ eclipse {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
+}
+
+jacoco {
+    toolVersion = "0.7.4+"
+    reportsDir = file("$buildDir/reports/jacoco")
 }
