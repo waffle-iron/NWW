@@ -62,7 +62,8 @@ dependencies {
     
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     
-    compileTest("org.springframework.boot:spring-boot-starter-test")
+     testCompile("junit:junit")
+     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 
@@ -78,6 +79,6 @@ task wrapper(type: Wrapper) {
 }
 
 jacoco {
-    toolVersion = "0.7.6.201602180812"
+    toolVersion = "0.7.4+"
     reportsDir = file("$buildDir/reports/jacoco")
 }
