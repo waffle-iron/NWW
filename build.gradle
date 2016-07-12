@@ -80,5 +80,13 @@ task wrapper(type: Wrapper) {
 
 jacoco {
     toolVersion = "0.7.4+"
-    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        xml {
+            enabled: true
+            destfile: "build/reports/coverage/jacoco.xml"
+        }
+    }
 }
