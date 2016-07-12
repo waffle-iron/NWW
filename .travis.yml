@@ -8,5 +8,4 @@ notifications:
     on_success: change
     on_failure: always
 after_success:
-  - find / -name '*.xml'
   - bash <(curl -s https://codecov.io/bash)
