@@ -85,8 +85,8 @@ jacoco {
 jacocoTestReport {
     reports {
         xml {
-            enabled: true
-            destfile: "build/reports/coverage/jacoco.xml"
+            enabled true
+            destfile "build/reports/coverage/jacoco.xml"
         }
     }
 }
